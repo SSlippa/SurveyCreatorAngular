@@ -1,10 +1,16 @@
 .flexContainer {
-  display: flex;
-  flex-direction: column-reverse;
-
+  display: inline-flex;
+  flex-direction: row-reverse;
+  flex-wrap: wrap-reverse;
+  justify-content: space-around;
 }
 
 .main {
-  width: 400px;
+  max-width: 550px;
+  flex-basis: auto;
+}
+
+.flex-element {
+  flex-grow: 1;
 }
 
