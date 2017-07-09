@@ -1,0 +1,10 @@
+.flexContainer {
+  display: flex;
+  flex-direction: column-reverse;
+
+}
+
+.main {
+  width: 400px;
+}
+

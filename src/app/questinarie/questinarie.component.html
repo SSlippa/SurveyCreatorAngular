@@ -1,0 +1,33 @@
+<div style="margin-top: 10px">
+  <div >
+    <form (ngSubmit)="onSubmit(f)" #f="ngForm">
+        <div class="form-group">
+          <label  for="questionName">Question Name</label>
+          <input id="questionName" class="form-control" type="text" name="questionName"  [ngModel]="'Q' + questionName" >
+            <ul class="row list-inline form-control" style="margin: 0; background-color: rgba(216, 27, 96, 0.09)">
+              <li><button  type="button" (click)="onTags('<b>', '</b>')"><b>B</b></button></li>
+              <li><button  type="button" (click)="onTags('<u>', '</u>')"><u>U</u></button></li>
+              <li><button  type="button" (click)="onTags('<h3>', '</h3>')">h3</button></li>
+              <li><button  type="button" (click)="onTags('<h4>', '</h4>')">h4</button></li>
+              <li><input id="textcolor" type="color"  name="color"></li>
+              <li><button  type="button" onclick="colors()">Color</button></li>
+            </ul>
+          <textarea
+            style="background-color: rgba(216, 27, 96, 0.09)"
+            name="questionText"
+            id="question"
+            rows="4"
+            class="form-control"
+            placeholder="Enter your question here"
+            [(ngModel)]="questionText"></textarea>
+        </div>
+        <span class="help-block alert alert-info" *ngIf="noteText">{{ noteText }}</span>
+
+        <textarea  id="answerTextArea" cols="25" rows="20" placeholder="Enter Answers here" name="answerTextArea" [(ngModel)] = "answers"></textarea>
+        <button type="submit" class="btn btn-primary btn-block">ADD</button>
+    </form>
+  </div>
+</div>
+
+
+
