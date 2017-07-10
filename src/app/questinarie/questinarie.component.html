@@ -17,6 +17,7 @@
             id="question"
             rows="4"
             class="form-control"
+            required
             placeholder="Enter your question here"
             [(ngModel)]="questionText"></textarea>
         </div>
@@ -27,22 +28,22 @@
           <textarea style="line-height: 2.4;" class="form-control" id="answerTextArea" cols="25" rows="15" placeholder="Enter Answers here" name="answerTextArea" [(ngModel)] = "answers"></textarea>
           </div>
           <div >
-            <div class="form-control" *ngFor="let parameter of answerParameters; let i = index">
-              <label>{{parameter.value}}</label>
+            <div class="form-control" *ngFor="let parameter of answerParameters">
+              <label>{{parameter.name}}</label>
               <label>Fix
-              <input id="fix" name="fix" type="checkbox" value="{{parameter.value}}" [ngModel]="parameter[i].checked">
+              <input id="fix" name="fix" type="checkbox" value="{{parameter.name}}" [(ngModel)]="parameter.fix" >
               </label>
-              <!--<label>Exclusive-->
-              <!--<input id="exclusive" name="exclusive" type="checkbox" value="{{parameter.value}}" [(ngModel)]="parameter.checked" >-->
-              <!--</label>-->
-              <!--<label>Other-->
-              <!--<input id="other" name="other" type="checkbox"  value="{{parameter.value}}" [(ngModel)]="parameter.checked">-->
-              <!--</label>-->
+              <label>Exclusive
+              <input id="exclusive" name="exclusive" type="checkbox" value="{{parameter.name}}" [(ngModel)]="parameter.exclusive" >
+              </label>
+              <label>Other
+              <input id="other" name="other" type="checkbox"  value="{{parameter.name}}" [(ngModel)]="parameter.other">
+              </label>
             </div>
           </div>
 
         </div>
-        <button type="submit" class="btn btn-primary btn-block">ADD</button>
+        <button type="submit" class="btn btn-primary btn-block" [disabled]="!f.valid">ADD</button>
     </form>
 </div>
 

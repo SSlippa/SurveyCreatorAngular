@@ -20,20 +20,18 @@ export class QuestinarieComponent implements OnInit {
   answers: string;
   fix = [];
 
-  // answerParameters: AnswerParameters[] = [
-  //   new AnswerParameters ('1', false, false, false),
-  //   new AnswerParameters ('2', false, false, false),
-  //   new AnswerParameters ('3', false, false, false),
-  //   new AnswerParameters ('4', false, false, false),
-  //   new AnswerParameters ('5', false, false, false),
-  // ];
-
-  answerParameters = [
-    {name: 'OptionA', value: '1', checked: false},
-    {name: 'OptionB', value: '2', checked: false},
-    {name: 'OptionC', value: '3', checked: false}
+  answerParameters: AnswerParameters[] = [
+    new AnswerParameters ('1', false, false, false),
+    new AnswerParameters ('2', false, false, false),
+    new AnswerParameters ('3', false, false, false),
+    new AnswerParameters ('4', false, false, false),
+    new AnswerParameters ('5', false, false, false),
+    new AnswerParameters ('6', false, false, false),
+    new AnswerParameters ('7', false, false, false),
+    new AnswerParameters ('8', false, false, false),
+    new AnswerParameters ('9', false, false, false),
+    new AnswerParameters ('10', false, false, false),
   ];
-
 
   constructor(private questionnaireService: QuestionnaireService) { }
 
@@ -57,9 +55,7 @@ export class QuestinarieComponent implements OnInit {
     this.questionName = this.questionName + 10 ;
     const questionName = 'Q' + form.value.questionName;
 
-    console.log(form);
     console.log(this.answerParameters);
-
 
     this.questionnaireService.answerFormat(this.answers);
     if (this.typeCode === 1) {
