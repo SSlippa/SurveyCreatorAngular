@@ -1,9 +1,8 @@
 <div style="margin-top: 10px">
-  <div >
     <form (ngSubmit)="onSubmit(f)" #f="ngForm">
         <div class="form-group">
           <label  for="questionName">Question Name</label>
-          <input id="questionName" class="form-control" type="text" name="questionName"  [ngModel]="'Q' + questionName" >
+          <input id="questionName" class="form-control" type="text" name="questionName"  [ngModel]="questionName" >
             <ul class="row list-inline form-control" style="margin: 0; background-color: rgba(216, 27, 96, 0.09)">
               <li><button  type="button" (click)="onTags('<b>', '</b>')"><b>B</b></button></li>
               <li><button  type="button" (click)="onTags('<u>', '</u>')"><u>U</u></button></li>
@@ -23,10 +22,28 @@
         </div>
         <span class="help-block alert alert-info" *ngIf="noteText">{{ noteText }}</span>
 
-        <textarea  id="answerTextArea" cols="25" rows="20" placeholder="Enter Answers here" name="answerTextArea" [(ngModel)] = "answers"></textarea>
+        <div style="display: flex">
+          <div>
+          <textarea style="line-height: 2.4;" class="form-control" id="answerTextArea" cols="25" rows="15" placeholder="Enter Answers here" name="answerTextArea" [(ngModel)] = "answers"></textarea>
+          </div>
+          <div >
+            <div class="form-control" *ngFor="let parameter of answerParameters; let i = index">
+              <label>{{parameter.value}}</label>
+              <label>Fix
+              <input id="fix" name="fix" type="checkbox" value="{{parameter.value}}" [ngModel]="parameter[i].checked">
+              </label>
+              <!--<label>Exclusive-->
+              <!--<input id="exclusive" name="exclusive" type="checkbox" value="{{parameter.value}}" [(ngModel)]="parameter.checked" >-->
+              <!--</label>-->
+              <!--<label>Other-->
+              <!--<input id="other" name="other" type="checkbox"  value="{{parameter.value}}" [(ngModel)]="parameter.checked">-->
+              <!--</label>-->
+            </div>
+          </div>
+
+        </div>
         <button type="submit" class="btn btn-primary btn-block">ADD</button>
     </form>
-  </div>
 </div>
 
 

@@ -2,6 +2,7 @@ import {Component, Input, OnInit, ViewChild} from '@angular/core';
 import {QuestionnaireService} from '../questionnaire.service';
 import {Subscription} from 'rxjs/Subscription';
 import {NgForm} from '@angular/forms';
+import {AnswerParameters} from './parameters.model';
 
 
 @Component({
@@ -12,16 +13,33 @@ import {NgForm} from '@angular/forms';
 export class QuestinarieComponent implements OnInit {
   @ViewChild('f') signupForm: NgForm;
   questionText: string;
-  questionName = 10;
+  questionName: number;
   private subscription: Subscription;
   noteText: string;
   typeCode: number;
   answers: string;
+  fix = [];
+
+  // answerParameters: AnswerParameters[] = [
+  //   new AnswerParameters ('1', false, false, false),
+  //   new AnswerParameters ('2', false, false, false),
+  //   new AnswerParameters ('3', false, false, false),
+  //   new AnswerParameters ('4', false, false, false),
+  //   new AnswerParameters ('5', false, false, false),
+  // ];
+
+  answerParameters = [
+    {name: 'OptionA', value: '1', checked: false},
+    {name: 'OptionB', value: '2', checked: false},
+    {name: 'OptionC', value: '3', checked: false}
+  ];
+
 
   constructor(private questionnaireService: QuestionnaireService) { }
 
-  ngOnInit() {
 
+  ngOnInit() {
+    this.questionName = 10;
     this.subscription = this.questionnaireService.noteText.subscribe(
     (note: string) => {
       this.noteText = note;
@@ -35,9 +53,14 @@ export class QuestinarieComponent implements OnInit {
   }
 
   onSubmit(form: NgForm) {
+    this.questionName = +form.value.questionName;
     this.questionName = this.questionName + 10 ;
-    const questionName = form.value.questionName;
-    console.log('Question name: ' + questionName);
+    const questionName = 'Q' + form.value.questionName;
+
+    console.log(form);
+    console.log(this.answerParameters);
+
+
     this.questionnaireService.answerFormat(this.answers);
     if (this.typeCode === 1) {
       this.questionnaireService.onSingleQuestionAdded(questionName, this.questionText);

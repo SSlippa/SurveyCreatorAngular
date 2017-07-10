@@ -1,16 +1,24 @@
 .flexContainer {
-  display: inline-flex;
-  flex-direction: row-reverse;
-  flex-wrap: wrap-reverse;
-  justify-content: space-around;
+  direction: rtl;
+  display: flex;
+  flex-wrap: wrap;
+  padding: 20px;
 }
-
 .main {
-  max-width: 550px;
-  flex-basis: auto;
+  width: 500px;
 }
-
-.flex-element {
+.display {
+  padding-right: 150px;
+}
+.flexElement {
+  color: #fff;
+  padding: 15px;
+  margin: 5px;
+  background: #b22222;
+  border-radius: 3px;
   flex-grow: 1;
 }
-
+.flex-container {
+  direction: rtl;
+  display: flex;
+}
