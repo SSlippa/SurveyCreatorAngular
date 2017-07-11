@@ -25,7 +25,7 @@
 
         <div style="display: flex">
           <div>
-          <textarea style="line-height: 2.4; " class="form-control" id="answerTextArea" cols="25" rows="15" placeholder="Enter Answers here" name="answerTextArea" [(ngModel)] = "answers"></textarea>
+          <textarea style="line-height: 2.4; " class="form-control" id="answerTextArea" cols="25" rows="13" placeholder="Enter Answers here" name="answerTextArea" [(ngModel)] = "answers"></textarea>
           </div>
           <div >
             <div  *ngFor="let parameter of answerParameters">
@@ -43,16 +43,22 @@
                   <!--<input type="checkbox" name="fix" value="{{parameter.name}}" [(ngModel)]="parameter.fix" >-->
                   <!--<span class="glyphicon glyphicon-ok"></span>-->
                 <!--</label>-->
-              <label class="btn btn-success">Fix
-              <input id="fix" name="fix" type="checkbox" value="{{parameter.name}}" [(ngModel)]="parameter.fix">
-              </label>
-              <label class="btn btn-primary">Exclusive
-              <input id="exclusive" name="exclusive" type="checkbox" value="{{parameter.name}}" [(ngModel)]="parameter.exclusive" >
-              </label>
-              <label class="btn btn-info">Other
-              <input id="other" name="other" type="checkbox"  value="{{parameter.name}}" [(ngModel)]="parameter.other">
-              </label>
+                <label class="btn btn-info">Other
+                    <input id="other" name="other" type="checkbox"  value="{{parameter.name}}" [(ngModel)]="parameter.other">
+                </label>
+                <label class="btn btn-primary">Exclusive
+                <input id="exclusive" name="exclusive" type="checkbox" value="{{parameter.name}}" [(ngModel)]="parameter.exclusive" >
+                </label>
+                <label class="btn btn-success">Fix
+                  <input id="fix" name="fix" type="checkbox" value="{{parameter.name}}" [(ngModel)]="parameter.fix">
+                </label>
               </div>
+            </div>
+            <div >
+            <label class="btn btn-danger" style="display: flex; justify-content: center;">Rotation
+            <input type="checkbox" name="random" [(ngModel)]="random">
+            <span class="glyphicon glyphicon-ok"></span>
+            </label>
             </div>
           </div>
 

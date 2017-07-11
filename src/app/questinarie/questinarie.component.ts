@@ -18,7 +18,7 @@ export class QuestinarieComponent implements OnInit {
   noteText: string;
   typeCode: number;
   answers: string;
-  fix = [];
+  random: boolean = false;
 
   test;
   answerParameters: AnswerParameters[];
@@ -27,7 +27,6 @@ export class QuestinarieComponent implements OnInit {
 
 
   ngOnInit() {
-
     this.answerParameters = this.questionnaireService.getAnswerParameters();
 
     this.questionName = 10;
@@ -44,9 +43,9 @@ export class QuestinarieComponent implements OnInit {
   }
 
 
-
   onSubmit(form: NgForm) {
-    console.log('test' + this.test);
+
+    console.log(this.random);
     this.questionName = +form.value.questionName;
     this.questionName = this.questionName + 10 ;
     const questionName = 'Q' + form.value.questionName;
@@ -69,11 +68,6 @@ export class QuestinarieComponent implements OnInit {
     if (this.typeCode === 5) {
       this.questionnaireService.onInfoQuestionAdded(questionName, this.questionText);
     }
-
-
-
-
-
   }
 
 

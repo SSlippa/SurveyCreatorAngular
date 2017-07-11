@@ -25,6 +25,8 @@ export class QuestionnaireService {
     new AnswerParameters (' 8', false, false, false),
     new AnswerParameters (' 9', false, false, false),
     new AnswerParameters ('10', false, false, false),
+    new AnswerParameters ('11', false, false, false),
+    new AnswerParameters ('12', false, false, false)
   ];
 
   constructor() { }
@@ -38,15 +40,35 @@ export class QuestionnaireService {
       }
     }
      let qindx = 1;
+    let i = 0;
      for (let answer of formattedAnswers) {
       if (qindx < 10) {
         answer = '\n        _0' + qindx + ' ' + '\"' + answer + '\"';
+        if (this.answerParameters[i].exclusive) {
+          answer += ' exclusive';
+        }
+        if (this.answerParameters[i].other) {
+          answer += ' other';
+        }
+        if (this.answerParameters[i].fix) {
+          answer += ' fix';
+        }
         this.newAnswers.push(answer);
       } else {
         answer = '\n    _' + qindx + ' ' + '\"' + answer + '\"';
+        if (this.answerParameters[i].exclusive) {
+          answer += ' exclusive';
+        }
+        if (this.answerParameters[i].other) {
+          answer += ' other';
+        }
+        if (this.answerParameters[i].fix) {
+          answer += ' fix';
+        }
         this.newAnswers.push(answer);
       }
       qindx++;
+        i++;
     }
   }
 
