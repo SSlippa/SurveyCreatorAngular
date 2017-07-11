@@ -20,23 +20,16 @@ export class QuestinarieComponent implements OnInit {
   answers: string;
   fix = [];
 
-  answerParameters: AnswerParameters[] = [
-    new AnswerParameters ('1', false, false, false),
-    new AnswerParameters ('2', false, false, false),
-    new AnswerParameters ('3', false, false, false),
-    new AnswerParameters ('4', false, false, false),
-    new AnswerParameters ('5', false, false, false),
-    new AnswerParameters ('6', false, false, false),
-    new AnswerParameters ('7', false, false, false),
-    new AnswerParameters ('8', false, false, false),
-    new AnswerParameters ('9', false, false, false),
-    new AnswerParameters ('10', false, false, false),
-  ];
+  test;
+  answerParameters: AnswerParameters[];
 
   constructor(private questionnaireService: QuestionnaireService) { }
 
 
   ngOnInit() {
+
+    this.answerParameters = this.questionnaireService.getAnswerParameters();
+
     this.questionName = 10;
     this.subscription = this.questionnaireService.noteText.subscribe(
     (note: string) => {
@@ -50,7 +43,10 @@ export class QuestinarieComponent implements OnInit {
     );
   }
 
+
+
   onSubmit(form: NgForm) {
+    console.log('test' + this.test);
     this.questionName = +form.value.questionName;
     this.questionName = this.questionName + 10 ;
     const questionName = 'Q' + form.value.questionName;

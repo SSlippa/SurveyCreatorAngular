@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 import {Subject} from 'rxjs/Subject';
+import {AnswerParameters} from "./questinarie/parameters.model";
 
 @Injectable()
 export class QuestionnaireService {
@@ -12,6 +13,20 @@ export class QuestionnaireService {
   categoricalSingle  = 'categorical[1..1]';
   categoricalMulti  = 'categorical[1..]';
   newAnswers = [];
+
+  answerParameters: AnswerParameters[] = [
+    new AnswerParameters (' 1', false, false, false),
+    new AnswerParameters (' 2', false, false, false),
+    new AnswerParameters (' 3', false, false, false),
+    new AnswerParameters (' 4', false, false, false),
+    new AnswerParameters (' 5', false, false, false),
+    new AnswerParameters (' 6', false, false, false),
+    new AnswerParameters (' 7', false, false, false),
+    new AnswerParameters (' 8', false, false, false),
+    new AnswerParameters (' 9', false, false, false),
+    new AnswerParameters ('10', false, false, false),
+  ];
+
   constructor() { }
 
   answerFormat(answers: string) {
@@ -73,5 +88,9 @@ export class QuestionnaireService {
     const question = '    \'' + this.breakline + qName + '\n\n    ' + qName + ' \"' + questionsData + '\"' + '\n' + '    info;\n\n';
     this.questions.push(question);
     this.questionsChanged.next(this.questions.slice());
+  }
+
+  getAnswerParameters() {
+    return this.answerParameters.slice();
   }
 }

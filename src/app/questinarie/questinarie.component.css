@@ -12,3 +12,9 @@ label {
   padding: 2px;
 }
 
+.btn span.glyphicon {
+  opacity: 0.1;
+}
+.btn.active span.glyphicon {
+  opacity: 1;
+}
