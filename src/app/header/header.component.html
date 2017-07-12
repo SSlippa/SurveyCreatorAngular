@@ -1,0 +1,14 @@
+<div >
+  <div>
+    <form #f="ngForm">
+      <div class="inline-radio">
+        <div><input id="single" type="radio"  name="title"  (click)="onType('single')" ><label for="single">Single</label></div>
+        <div><input id="multi" type="radio" name="title"   (click)="onType('multi')"><label for="multi">Multi</label></div>
+        <div><input id="open" type="radio" name="title"   (click)="onType('open')"><label for="open">Open</label></div>
+        <div><input id="numbers" type="radio" name="title"   (click)="onType('numbers')" ><label for="numbers">Numbers</label></div>
+        <div><input id="info" type="radio" name="title" (click)="onType('info')" ><label for="info">Info</label></div>
+      </div>
+
+    </form>
+  </div>
+</div>

@@ -1,0 +1,24 @@
+.flexContainer {
+  direction: rtl;
+  display: flex;
+  flex-wrap: wrap;
+  padding: 20px;
+}
+.main {
+  width: 500px;
+}
+.display {
+  padding-right: 150px;
+}
+.flexElement {
+  color: #fff;
+  padding: 15px;
+  margin: 5px;
+  background: #b22222;
+  border-radius: 3px;
+  flex-grow: 1;
+}
+.flex-container {
+  direction: rtl;
+  display: flex;
+}
