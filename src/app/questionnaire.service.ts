@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import {Subject} from 'rxjs/Subject';
-import {AnswerParameters} from "./questinarie/parameters.model";
+import {AnswerParameters} from './questinarie/parameters.model';
 
 @Injectable()
 export class QuestionnaireService {
