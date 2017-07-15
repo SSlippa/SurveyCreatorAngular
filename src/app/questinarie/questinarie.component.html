@@ -1,16 +1,17 @@
 <div style="margin-top: 10px">
     <form (ngSubmit)="onSubmit(f)" #f="ngForm">
-        <div class="form-group">
+        <div class="form-group" >
           <label  for="questionName">Question Name</label>
           <input id="questionName" class="form-control" type="text" name="questionName"  [ngModel]="questionName" >
-            <ul class="row list-inline form-control" style="margin: 0; background-color: rgba(216, 27, 96, 0.09)">
-              <li><button  type="button" (click)="onTags('<b>', '</b>')"><b>B</b></button></li>
-              <li><button  type="button" (click)="onTags('<u>', '</u>')"><u>U</u></button></li>
-              <li><button  type="button" (click)="onTags('<h3>', '</h3>')">h3</button></li>
-              <li><button  type="button" (click)="onTags('<h4>', '</h4>')">h4</button></li>
-              <li><input id="textcolor" type="color"  name="color"></li>
-              <li><button  type="button" onclick="colors()">Color</button></li>
-            </ul>
+            <!--<ul class="row list-inline form-control" style="margin: 0; background-color: rgba(216, 27, 96, 0.09)">-->
+              <!--<li><button  type="button" (click)="onTags('<b>', '</b>')"><b>B</b></button></li>-->
+              <!--<li><button  type="button" (click)="onTags('<u>', '</u>')"><u>U</u></button></li>-->
+              <!--<li><button  type="button" (click)="onTags('<h3>', '</h3>')">h3</button></li>-->
+              <!--<li><button  type="button" (click)="onTags('<h4>', '</h4>')">h4</button></li>-->
+              <!--<li><input id="textcolor" type="color"  name="color"></li>-->
+              <!--<li><button  type="button" onclick="colors()">Color</button></li>-->
+            <!--</ul>-->
+          <!--[froalaEditor]-->
           <textarea
             style="background-color: rgba(216, 27, 96, 0.09)"
             name="questionText"
@@ -29,7 +30,7 @@
           </div>
           <div >
             <div  *ngFor="let parameter of answerParameters">
-              <div  class="form-control btn-group" >
+              <div  class="form-control btn-group"  >
               <label>{{parameter.name}}</label>
                 <!--<label class="btn btn-info" >Other-->
                   <!--<input #cb1 type="checkbox" name="other"   value="{{parameter.other}}" [(ngModel)]="parameter.other"  >-->

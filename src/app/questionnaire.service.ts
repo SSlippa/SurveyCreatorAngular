@@ -1,11 +1,20 @@
-import { Injectable } from '@angular/core';
+import {Injectable, Input} from '@angular/core';
 import {Subject} from 'rxjs/Subject';
 import {AnswerParameters} from './questinarie/parameters.model';
+import {Subscription} from 'rxjs/Subscription';
 
 @Injectable()
 export class QuestionnaireService {
   noteText = new Subject<string>();
+  note: string;
   typeCode = new Subject<number>();
+  loop = new Subject<boolean>();
+  clickableImages: boolean;
+  dynamicGrid: boolean;
+  numberCodes = new Subject<boolean>();
+  numberCodesListener: boolean;
+  openCodes = new Subject<boolean>();
+  openCodesListener: boolean;
   questionsChanged = new Subject<string[]>();
   questions = [];
   answers = [];
@@ -13,6 +22,8 @@ export class QuestionnaireService {
   categoricalSingle  = 'categorical[1..1]';
   categoricalMulti  = 'categorical[1..]';
   newAnswers = [];
+  private subscription: Subscription;
+
 
   answerParameters: AnswerParameters[] = [
     new AnswerParameters (' 1', false, false, false),
@@ -29,7 +40,23 @@ export class QuestionnaireService {
     new AnswerParameters ('12', false, false, false)
   ];
 
-  constructor() { }
+  constructor() {
+    this.subscription = this.noteText.subscribe(
+      (note: string) => {
+        this.note = note;
+      }
+    );
+    this.numberCodes.subscribe(
+      (codes: boolean) => {
+        this.numberCodesListener = codes;
+      }
+    );
+    this.openCodes.subscribe(
+      (codes: boolean) => {
+        this.openCodesListener = codes;
+      }
+    );
+  }
 
   answerFormat(answers: string) {
     const formattedAnswers = [];
@@ -77,20 +104,16 @@ export class QuestionnaireService {
     }
   }
 
-  onSingleQuestionAdded(qName: string, questionsData: string) {
-
-    const note = 'סמן את התשובה המתאימה ביותר';
-    const question = '    ' + this.breakline + qName + '\n\n    ' + qName + ' \"' + questionsData + '\n' + '    <small><i>' + note + '</i></small>' + '\"\n    ' + this.categoricalSingle + '\n' + '   {\n    ' + this.newAnswers + '\n    }'   + ';\n\n';
+  onSingleQuestionAdded(qName: string, questionsData: string, ran: string) {
+    const question = '    \`' + this.breakline + qName + '\n\n    ' + qName + ' \"' + questionsData + '\n' + '    <small><i>' + this.note + '</i></small>' + '\"\n    ' + this.categoricalSingle + '\n' + '   {\n    ' + this.newAnswers + '\n    }' + ran + ';\n\n';
     this.questions.push(question);
     this.questionsChanged.next(this.questions.slice());
     this.answers = [];
     this.newAnswers = [];
   }
 
-  onMultiQuestionAdded(qName: string, questionsData: string) {
-
-    const note = 'סמן את כל התשובות המתאימות';
-    const question = '    ' + this.breakline + qName + '\n\n    ' + qName + ' \"' + questionsData + '\n' + '    <small><i>' + note + '</i></small>' + '\"\n    ' + this.categoricalMulti + '\n' + '   {\n    ' + this.newAnswers + '\n    }'  + ';\n\n';
+  onMultiQuestionAdded(qName: string, questionsData: string, ran: string) {
+    const question = '    \`' + this.breakline + qName + '\n\n    ' + qName + ' \"' + questionsData + '\n' + '    <small><i>' + this.note + '</i></small>' + '\"\n    ' + this.categoricalMulti + '\n' + '   {\n    ' + this.newAnswers + '\n    }' + ran  + ';\n\n';
     this.questions.push(question);
     this.questionsChanged.next(this.questions.slice());
     this.answers = [];
@@ -98,17 +121,29 @@ export class QuestionnaireService {
   }
 
   onOpenQuestionAdded(qName: string, questionsData: string) {
-    const note = 'פרט ככל הניתן';
-    const question = '    \''  + this.breakline  + qName + '\n\n    '  + qName + ' \"' + questionsData + '\n' + '    <small><i>' + note + '</i></small>' + '\"' + '\n' + '    text[1..500];\n\n';
+    let question;
+    if (this.openCodesListener) {
+      question = '    \''  + this.breakline  + qName + '\n\n    '  + qName + ' \"' + questionsData + '\n' + '    <small><i>' + this.note + '</i></small>' + '\"' + '\n' + '    text[1..500]\n    codes(\n    {' + this.newAnswers + '\n' +    '});\n\n';
+    } else {
+      question = '    \''  + this.breakline  + qName + '\n\n    '  + qName + ' \"' + questionsData + '\n' + '    <small><i>' + this.note + '</i></small>' + '\"' + '\n' + '    text[1..500];\n\n';
+    }
     this.questions.push(question);
     this.questionsChanged.next(this.questions.slice());
+    this.answers = [];
+    this.newAnswers = [];
   }
 
   onNumbersQuestionAdded(qName: string, questionsData: string) {
-    const note = 'הכנס תשובה מספרית';
-    const question = '    \'' + this.breakline + qName + '\n\n    '  + qName + ' \"' + questionsData + '\n' + '    <small><i>' + note + '</i></small>' + '\"' + '\n' + '    long[1..10];\n\n';
+    let question;
+    if (this.numberCodesListener) {
+       question = '    ' + this.breakline + qName + '\n\n    ' + qName + ' \"' + questionsData + '\n' + '    <small><i>' + this.note + '</i></small>' + '\"' + '\n' + '   long[1..10]\n   codes(\n   {' + this.newAnswers  + '\n' + '   });\n\n';
+    } else {
+       question = '    \'' + this.breakline + qName + '\n\n    '  + qName + ' \"' + questionsData + '\n' + '    <small><i>' + this.note + '</i></small>' + '\"' + '\n' + '    long[1..10];\n\n';
+    }
     this.questions.push(question);
     this.questionsChanged.next(this.questions.slice());
+    this.answers = [];
+    this.newAnswers = [];
   }
 
   onInfoQuestionAdded(qName: string, questionsData: string) {
@@ -119,5 +154,10 @@ export class QuestionnaireService {
 
   getAnswerParameters() {
     return this.answerParameters.slice();
+  }
+
+  deleteQuestion(id: number) {
+    this.questions.splice(id, 1);
+    this.questionsChanged.next(this.questions.slice());
   }
 }

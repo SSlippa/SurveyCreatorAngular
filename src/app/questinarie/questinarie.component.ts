@@ -3,6 +3,8 @@ import {QuestionnaireService} from '../questionnaire.service';
 import {Subscription} from 'rxjs/Subscription';
 import {NgForm} from '@angular/forms';
 import {AnswerParameters} from './parameters.model';
+import {Subject} from 'rxjs/Subject';
+
 
 
 @Component({
@@ -20,7 +22,7 @@ export class QuestinarieComponent implements OnInit {
   answers: string;
   random: boolean = false;
 
-  test;
+
   answerParameters: AnswerParameters[];
 
   constructor(private questionnaireService: QuestionnaireService) { }
@@ -44,8 +46,12 @@ export class QuestinarieComponent implements OnInit {
 
 
   onSubmit(form: NgForm) {
-
-    console.log(this.random);
+    let ran: string;
+    if (this.random) {
+      ran = 'ran';
+    } else {
+      ran = '';
+    }
     this.questionName = +form.value.questionName;
     this.questionName = this.questionName + 10 ;
     const questionName = 'Q' + form.value.questionName;
@@ -54,10 +60,10 @@ export class QuestinarieComponent implements OnInit {
 
     this.questionnaireService.answerFormat(this.answers);
     if (this.typeCode === 1) {
-      this.questionnaireService.onSingleQuestionAdded(questionName, this.questionText);
+      this.questionnaireService.onSingleQuestionAdded(questionName, this.questionText, ran);
     }
     if (this.typeCode === 2) {
-      this.questionnaireService.onMultiQuestionAdded(questionName, this.questionText);
+      this.questionnaireService.onMultiQuestionAdded(questionName, this.questionText, ran);
     }
     if (this.typeCode === 3) {
     this.questionnaireService.onOpenQuestionAdded(questionName, this.questionText);
