@@ -23,10 +23,12 @@ export class QuestionnaireService {
   questionsChanged = new Subject<string[]>();
   questions = [];
   answers = [];
+  properties = [];
   breakline = ' =============================';
   categoricalSingle  = 'categorical[1..1]';
   categoricalMulti  = 'categorical[1..]';
   newAnswers = [];
+  newProperties = [];
   private subscription: Subscription;
 
 
@@ -61,9 +63,14 @@ export class QuestionnaireService {
         this.openCodes = codes;
       }
     );
+    this.loopListener.subscribe(
+      (data: boolean) => {
+        this.loop = data;
+      }
+    );
   }
 
-  answerFormat(answers: string) {
+  answerFormat(answers: string, properties: string) {
     if (answers) {
       const formattedAnswers = [];
       this.answers = answers.split('\n');
@@ -109,10 +116,39 @@ export class QuestionnaireService {
         i++;
       }
     }
+    if (properties) {
+      const formattedProperties = [];
+      this.properties = properties.split('\n');
+      for (const property of this.properties) {
+        if (property !== '') {
+          formattedProperties.push(property);
+        }
+      }
+      let qindx = 1;
+      let i = 0;
+
+      for (let property of formattedProperties) {
+        if (qindx < 10) {
+          property = '\n        _0' + qindx + ' ' + '\"' + property + '\"';
+          this.newProperties.push(property);
+        } else {
+          property = '\n    _' + qindx + ' ' + '\"' + property + '\"';
+          this.newProperties.push(property);
+        }
+        qindx++;
+        i++;
+      }
+    }
   }
 
   onSingleQuestionAdded(qName: string, questionsData: string, ran: string) {
-    const question = '    \`' + this.breakline + qName + '\n\n    ' + qName + ' \"' + questionsData + '\n' + '    <small><i>' + this.note + '</i></small>' + '\"\n    ' + this.categoricalSingle + '\n' + '   {\n    ' + this.newAnswers + '\n    }' + ran + ';\n\n';
+    let question;
+    const propRan = '';
+    if (this.loop) {
+      question =  '    \`' + this.breakline + qName + '\n\n    ' + qName + ' \"' + '\"' + '\n' + '    loop\n{\n' + this.newProperties + '\n}' + propRan + ' fields\n (\n    slice \"' + questionsData + '\n'  + '    <small><i>' + this.note + '</i></small>'  + '\"\n' + this.categoricalSingle + '\n' + '    {'  + this.newAnswers + '\n' + '    }    ' + ran + ';\n    )expand;\n';
+    } else {
+      question = '    \`' + this.breakline + qName + '\n\n    ' + qName + ' \"' + questionsData + '\n' + '    <small><i>' + this.note + '</i></small>' + '\"\n    ' + this.categoricalSingle + '\n' + '   {\n    ' + this.newAnswers + '\n    }' + ran + ';\n\n';
+    }
     this.questions.push(question);
     this.questionsChanged.next(this.questions.slice());
     this.answers = [];

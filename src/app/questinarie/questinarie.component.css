@@ -3,7 +3,7 @@
   width: 100px;
 }
 
-#answerTextArea {
+#answerTextArea, #loopPropertiesArea {
   white-space: nowrap;
   background-color: rgba(216, 27, 96, 0.02)
 }

@@ -26,8 +26,14 @@
         <!--Note-->
         <span class="help-block alert alert-info" *ngIf="noteText">{{ noteText }}</span>
 
+        <!--LoopProperties-->
+        <div *ngIf="loopProperties" style="float:left;">
+          <h3>Loop Properties</h3>
+          <textarea style="line-height: 2.4; " class="form-control" id="loopPropertiesArea" cols="15" rows="13" placeholder="Enter Properties here" name="answerTextArea" [(ngModel)] = "properties"></textarea>
+
+        </div>
         <!--Answers Block-->
-          <div style="display: flex">
+          <div style="display: flex; min-width: 500px">
             <div>
             <textarea style="line-height: 2.4; " class="form-control" id="answerTextArea" cols="25" rows="13" placeholder="Enter Answers here" name="answerTextArea" [(ngModel)] = "answers"></textarea>
             </div>

@@ -20,8 +20,9 @@ export class QuestinarieComponent implements OnInit {
   noteText: string;
   typeCode: number;
   answers: string;
+  properties: string;
   random: boolean = false;
-
+  loopProperties: boolean;
 
   answerParameters: AnswerParameters[];
 
@@ -42,6 +43,11 @@ export class QuestinarieComponent implements OnInit {
         this.typeCode = typeCode;
       }
     );
+    this.subscription = this.questionnaireService.loopListener.subscribe(
+      (data: boolean) => {
+        this.loopProperties = data;
+      }
+    );
   }
 
 
@@ -56,9 +62,9 @@ export class QuestinarieComponent implements OnInit {
     this.questionName = this.questionName + 10 ;
     const questionName = 'Q' + form.value.questionName;
 
-    console.log(this.answerParameters);
 
-    this.questionnaireService.answerFormat(this.answers);
+    this.questionnaireService.answerFormat(this.answers, this.properties);
+
     if (this.typeCode === 1) {
       this.questionnaireService.onSingleQuestionAdded(questionName, this.questionText, ran);
     }
