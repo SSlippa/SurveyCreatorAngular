@@ -8,13 +8,18 @@ export class QuestionnaireService {
   noteText = new Subject<string>();
   note: string;
   typeCode = new Subject<number>();
-  loop = new Subject<boolean>();
+  loopListener = new Subject<boolean>();
+  loop: boolean;
+  clickableImagesListener = new Subject<boolean>();
   clickableImages: boolean;
+  dynamicGridListener = new Subject<boolean>();
   dynamicGrid: boolean;
-  numberCodes = new Subject<boolean>();
-  numberCodesListener: boolean;
-  openCodes = new Subject<boolean>();
-  openCodesListener: boolean;
+  scalaListener = new Subject<boolean>();
+  scala: boolean;
+  numberCodesListener = new Subject<boolean>();
+  numberCodes: boolean;
+  openCodesListener = new Subject<boolean>();
+  openCodes: boolean;
   questionsChanged = new Subject<string[]>();
   questions = [];
   answers = [];
@@ -46,61 +51,63 @@ export class QuestionnaireService {
         this.note = note;
       }
     );
-    this.numberCodes.subscribe(
+    this.numberCodesListener.subscribe(
       (codes: boolean) => {
-        this.numberCodesListener = codes;
+        this.numberCodes = codes;
       }
     );
-    this.openCodes.subscribe(
+    this.openCodesListener.subscribe(
       (codes: boolean) => {
-        this.openCodesListener = codes;
+        this.openCodes = codes;
       }
     );
   }
 
   answerFormat(answers: string) {
-    const formattedAnswers = [];
-    this.answers = answers.split('\n');
-    for (const answer of this.answers) {
-      if (answer !== '') {
-        formattedAnswers.push(answer);
+    if (answers) {
+      const formattedAnswers = [];
+      this.answers = answers.split('\n');
+      for (const answer of this.answers) {
+        if (answer !== '') {
+          formattedAnswers.push(answer);
+        }
       }
-    }
-     let qindx = 1;
-    let i = 0;
+      let qindx = 1;
+      let i = 0;
 
 
-     for (let answer of formattedAnswers) {
-      if (qindx < 10) {
-        answer = '\n        _0' + qindx + ' ' + '\"' + answer + '\"';
-        if (this.answerParameters[i].exclusive) {
-          answer += ' exclusive';
+      for (let answer of formattedAnswers) {
+        if (qindx < 10) {
+          answer = '\n        _0' + qindx + ' ' + '\"' + answer + '\"';
+          if (this.answerParameters[i].exclusive) {
+            answer += ' exclusive';
+          }
+          if (this.answerParameters[i].other) {
+            answer += ' other';
+          }
+          if (this.answerParameters[i].fix) {
+            answer += ' fix';
+          }
+          this.newAnswers.push(answer);
+        } else if (qindx <= this.answerParameters.length) {
+          answer = '\n    _' + qindx + ' ' + '\"' + answer + '\"';
+          if (this.answerParameters[i].exclusive) {
+            answer += ' exclusive';
+          }
+          if (this.answerParameters[i].other) {
+            answer += ' other';
+          }
+          if (this.answerParameters[i].fix) {
+            answer += ' fix';
+          }
+          this.newAnswers.push(answer);
+        } else {
+          answer = '\n    _' + qindx + ' ' + '\"' + answer + '\"';
+          this.newAnswers.push(answer);
         }
-        if (this.answerParameters[i].other) {
-          answer += ' other';
-        }
-        if (this.answerParameters[i].fix) {
-          answer += ' fix';
-        }
-        this.newAnswers.push(answer);
-      } else if (qindx <= this.answerParameters.length) {
-        answer = '\n    _' + qindx + ' ' + '\"' + answer + '\"';
-        if (this.answerParameters[i].exclusive) {
-          answer += ' exclusive';
-        }
-        if (this.answerParameters[i].other) {
-          answer += ' other';
-        }
-        if (this.answerParameters[i].fix) {
-          answer += ' fix';
-        }
-        this.newAnswers.push(answer);
-      } else {
-        answer = '\n    _' + qindx + ' ' + '\"' + answer + '\"';
-        this.newAnswers.push(answer);
-      }
-      qindx++;
+        qindx++;
         i++;
+      }
     }
   }
 
@@ -122,7 +129,7 @@ export class QuestionnaireService {
 
   onOpenQuestionAdded(qName: string, questionsData: string) {
     let question;
-    if (this.openCodesListener) {
+    if (this.openCodes) {
       question = '    \''  + this.breakline  + qName + '\n\n    '  + qName + ' \"' + questionsData + '\n' + '    <small><i>' + this.note + '</i></small>' + '\"' + '\n' + '    text[1..500]\n    codes(\n    {' + this.newAnswers + '\n' +    '});\n\n';
     } else {
       question = '    \''  + this.breakline  + qName + '\n\n    '  + qName + ' \"' + questionsData + '\n' + '    <small><i>' + this.note + '</i></small>' + '\"' + '\n' + '    text[1..500];\n\n';
@@ -135,7 +142,7 @@ export class QuestionnaireService {
 
   onNumbersQuestionAdded(qName: string, questionsData: string) {
     let question;
-    if (this.numberCodesListener) {
+    if (this.numberCodes) {
        question = '    ' + this.breakline + qName + '\n\n    ' + qName + ' \"' + questionsData + '\n' + '    <small><i>' + this.note + '</i></small>' + '\"' + '\n' + '   long[1..10]\n   codes(\n   {' + this.newAnswers  + '\n' + '   });\n\n';
     } else {
        question = '    \'' + this.breakline + qName + '\n\n    '  + qName + ' \"' + questionsData + '\n' + '    <small><i>' + this.note + '</i></small>' + '\"' + '\n' + '    long[1..10];\n\n';

@@ -24,14 +24,34 @@ export class HeaderComponent implements OnInit {
 
   }
 
+  LoopChange () {
+    this.loop = !this.loop;
+    this.questionnaireService.loopListener.next(this.loop);
+  }
+
+  ClickImgChange () {
+    this.clickableImages = !this.clickableImages;
+    this.questionnaireService.clickableImagesListener.next(this.clickableImages);
+  }
+
+  DynamicGrigChange () {
+    this.dynamicGrid = !this.dynamicGrid;
+    this.questionnaireService.dynamicGridListener.next(this.dynamicGrid);
+  }
+
+  ScalaChange () {
+    this.scala = !this.scala;
+    this.questionnaireService.scalaListener.next(this.scala);
+  }
+
   OpenCodesChange () {
     this.openCodes = !this.openCodes;
-    this.questionnaireService.openCodes.next(this.openCodes);
+    this.questionnaireService.openCodesListener.next(this.openCodes);
   }
 
   NumberCodesChange () {
     this.numbersCodes = !this.numbersCodes;
-    this.questionnaireService.numberCodes.next(this.numbersCodes);
+    this.questionnaireService.numberCodesListener.next(this.numbersCodes);
   }
 
   onType(type: string) {
@@ -39,16 +59,10 @@ export class HeaderComponent implements OnInit {
     if (type === 'single') {
       this.questionnaireService.noteText.next('סמן את התשובה המתאימה ביותר');
       this.questionnaireService.typeCode.next(1);
-      this.questionnaireService.loop.next(this.loop);
-      this.questionnaireService.loop.next(this.clickableImages);
-      this.questionnaireService.loop.next(this.dynamicGrid);
     }
     if (type === 'multi') {
       this.questionnaireService.noteText.next('סמן את כל התשובות המתאימות');
       this.questionnaireService.typeCode.next(2);
-      this.questionnaireService.loop.next(this.loop);
-      this.questionnaireService.loop.next(this.clickableImages);
-      this.questionnaireService.loop.next(this.dynamicGrid);
     }
     if (type === 'open') {
       this.questionnaireService.noteText.next('פרט ככל הניתן');
