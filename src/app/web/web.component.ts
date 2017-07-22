@@ -30,27 +30,19 @@ import {Subscription} from 'rxjs/Subscription';
   ]
 })
 export class WebComponent implements OnInit {
-  questions = [];
+  webAsk = [];
   private subscription: Subscription;
-  questionAfterJoin = '';
+  webAskAfterJoin = '';
   isCopied: boolean = false;
 
   constructor(private questionnaireService: QuestionnaireService) { }
 
   ngOnInit() {
-    this.subscription = this.questionnaireService.questionsChanged.subscribe(
+    this.subscription = this.questionnaireService.webAskingChanged.subscribe(
       (question: string[]) => {
-        this.questions = question;
-        this.questionAfterJoin = this.questions.join('');
+        this.webAsk = question;
+        this.webAskAfterJoin = this.webAsk.join('');
       }
     );
-  }
-
-  onCopyToBuffer() {
-
-  }
-
-  onDelete(id: number) {
-    this.questionnaireService.deleteQuestion(id);
   }
 }

@@ -25,9 +25,30 @@
         </div>
         <!--Note-->
         <span class="help-block alert alert-info" *ngIf="noteText">{{ noteText }}</span>
+        <!--FILTER-->
+        <div class="form-group" style="float:left;">
+          <div class="Filter" id="filteeer">
 
+            <div class="FltrSelect" >
+              <label for="FilterOnThisQuestion">Filter This Question</label>
+              <select class="form-control" id="FilterOnThisQuestion" name="FilterOnThisQuestion"></select>
+            </div>
+            <hr>
+            <br>
+            <div class="FltrSelect">
+              <label for="FilterSelect">Filter From</label>
+
+              <select class="form-control" id="FilterSelect" name="FilterSelect" ></select>
+              <select class="form-control" multiple id="FilterSelect2" name="FilterSelect" style="width: 100px" ></select>
+
+            </div>
+
+
+            <a href="#" class="btn btn-info" id="FilterBtn" type="button" onclick="FilterFunc()">Filter</a>
+          </div>
+        </div>
         <!--LoopProperties-->
-        <div *ngIf="loopProperties" style="float:left;">
+        <div *ngIf="loopProperties" style="float:left; margin-left: 20px">
           <!--<h3>Loop Properties</h3>-->
           <textarea style="line-height: 2.4; " class="form-control" id="loopPropertiesArea" cols="15" rows="13" placeholder="Enter Properties here" name="answerTextArea" [(ngModel)] = "properties"></textarea>
           <div >

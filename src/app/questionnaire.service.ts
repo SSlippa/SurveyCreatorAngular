@@ -24,6 +24,8 @@ export class QuestionnaireService {
   openCodes: boolean;
   questionsChanged = new Subject<string[]>();
   questions = [];
+  webAskingChanged = new Subject<string[]>();
+  webAsking = [];
   answers = [];
   properties = [];
   breakline = ' =============================';
@@ -172,24 +174,29 @@ export class QuestionnaireService {
 
   onSingle_MultiQuestionAdded(qName: string, questionsData: string, ran: string, ranProp: string) {
     let question;
+    let webask;
     // Clickable Images
     if (this.clickableImages) {
       question = '    \`' + this.breakline  + qName + '\n\n    ' +  qName + ' \"' + questionsData + '\n' + '    <small><i>' + this.note + '</i></small>' + '\"' + '\n' + this.clickImageText + this.categorical + '\n' + '    {'  + '  ' + this.newAnswers + '\n' + '    }' + ran + ';\n\n';
+      // Dynamic Grid
+    } else if (this.dynamicGrid && this.loop) {
+      question = '    \`' + this.breakline + qName + '\n\n    ' + qName + ' \"' + questionsData + '\n' + '    <small><i>' + this.note + '</i></small>' + '\"' + '\n' + this.dynamicGridText + '    loop\n    {' + this.newProperties + '\n    }' + ranProp + ' fields\n    (\n    slice \"\"\n    ' + this.categorical + '\n' + '    {' + this.newAnswers + '\n' + '    }' + ran + ';\n    )expand;\n';
     // Loop Question
     } else if (this.loop) {
       question =  '    \`' + this.breakline + qName + '\n\n    ' + qName + ' \"' + '\"' + '\n' + '    loop\n    {' + this.newProperties + '\n    }' + ranProp + ' fields\n    (\n    slice \"' + questionsData + '\n'  + '    <small><i>' + this.note + '</i></small>'  + '\"\n    ' + this.categorical + '\n' + '    {'  + this.newAnswers + '\n' + '    }' + ran + ';\n    )expand;\n';
-      // Dynamic Grid
-    } else if (this.dynamicGrid) {
-      question = '    \`' + this.breakline + qName + '\n\n    ' + qName + ' \"' + questionsData + '\n' + '    <small><i>' + this.note + '</i></small>' + '\"' + '\n' + this.dynamicGridText + 'loop\n{\n' + this.newProperties + '\n}' + ranProp + ' fields\n (\n   slice \"\"\n' + this.categorical + '\n' + '    {' + this.newAnswers + '\n' + '    }' + ran + ';\n    )expand;\n';
       // Dynamic Grid Scala
     } else if (this.scala) {
-      question = '    \`' + this.breakline + qName + '\n\n    ' + qName + ' \"' + questionsData + '\n' + '    <small><i>' + this.note + '</i></small>' + '\"' + '\n' + this.dynamicGridScala + 'loop\n{\n' + this.newProperties + '\n}' + ranProp + ' fields\n (\n   slice \"\"\n' + this.categorical + '\n' + '    {' + this.newAnswers + '\n' + '    }' + ran + ';\n    )expand;\n';
+      question = '    \`' + this.breakline + qName + '\n\n    ' + qName + ' \"' + questionsData + '\n' + '    <small><i>' + this.note + '</i></small>' + '\"' + '\n' + this.dynamicGridScala + 'loop\n{' + this.newProperties + '\n}' + ranProp + ' fields\n (\n   slice \"\"\n' + this.categorical + '\n' + '    {' + this.newAnswers + '\n' + '    }' + ran + ';\n    )expand;\n';
       // Regular Question
     } else {
       question = '    \`' + this.breakline + qName + '\n\n    ' + qName + ' \"' + questionsData + '\n' + '    <small><i>' + this.note + '</i></small>' + '\"\n    ' + this.categorical + '\n' + '    {' + this.newAnswers + '\n    }' + ran + ';\n\n';
     }
     this.questions.push(question);
     this.questionsChanged.next(this.questions.slice());
+    // WEB
+    webask = '    \`' + this.breakline + qName + '\n\n    ' + qName + '.Ask() \n\n';
+    this.webAsking.push(webask);
+    this.webAskingChanged.next(this.webAsking.slice());
   }
 
   // onMultiQuestionAdded(qName: string, questionsData: string, ran: string, ranProp: string) {
@@ -238,5 +245,7 @@ export class QuestionnaireService {
   deleteQuestion(id: number) {
     this.questions.splice(id, 1);
     this.questionsChanged.next(this.questions.slice());
+    this.webAsking.splice(id, 1);
+    this.webAskingChanged.next(this.webAsking.slice());
   }
 }
