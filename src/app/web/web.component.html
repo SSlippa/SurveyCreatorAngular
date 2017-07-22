@@ -1,0 +1,13 @@
+<span class="alert alert-info">Web</span>
+<button
+  type="button"
+  class="btn btn-primary"
+  [class.btn-success]= "isCopied"
+  ngxClipboard [cbContent]="questionAfterJoin"
+  (cbOnSuccess)="isCopied1 = true">Copy to clipboard</button>
+
+<div *ngFor="let question of questions; let i = index" style="cursor: pointer" [@animatedInOut]>
+<pre style="direction: ltr; min-width: 400px">
+  <button style="float: right" type="button" class="btn btn-danger" (click)="onDelete(i)">X</button>
+  {{question}}</pre>
+</div>
