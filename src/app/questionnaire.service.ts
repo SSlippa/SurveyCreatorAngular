@@ -7,7 +7,9 @@ import {Subscription} from 'rxjs/Subscription';
 export class QuestionnaireService {
   noteText = new Subject<string>();
   note: string;
+  categorical: string;
   typeCode = new Subject<number>();
+  typeCodeNum: number;
   loopListener = new Subject<boolean>();
   loop: boolean;
   clickableImagesListener = new Subject<boolean>();
@@ -25,10 +27,14 @@ export class QuestionnaireService {
   answers = [];
   properties = [];
   breakline = ' =============================';
-  categoricalSingle  = 'categorical[1..1]';
-  categoricalMulti  = 'categorical[1..]';
+
   newAnswers = [];
   newProperties = [];
+  clickImageText = '    [\n    flametatype = \"clickableimages\",\n    rowContainWidth = 800,\n    rowBtnHeight = 190,\n    rowBtnWidth = 190,\n    \'rowContainHgap = 20,\n    rowBtnBorderRadius = 30,\n    rowContainOptHalign = \"right\"\n    ]\n    ';
+
+  dynamicGridText = '    [\n        flametatype = \"dynamicgrid\",\n    colBtnHeight = 190,\n    colBtnWidth = 170,\n    rowBtnWidth = 300,\n    rowContainHgap = -315,\n    colContainHoffset = 120,\n    rowContainHoffset = 40,\n    showDGprev = false,\n    colContainOptHalign = \"right\"\n    ]\n';
+
+  dynamicGridScala = '    [\n        flametatype = \"dynamicgrid\",\n    colBtnWidth = 70,\n    rowBtnWidth = 150,\n    showDGprev = false\n    ]\n';
   private subscription: Subscription;
 
 
@@ -53,6 +59,16 @@ export class QuestionnaireService {
         this.note = note;
       }
     );
+    this.subscription = this.typeCode.subscribe(
+      (number: number) => {
+        this.typeCodeNum = number;
+        if (this.typeCodeNum === 1) {
+          this.categorical  = 'categorical[1..1]';
+        } else {
+          this.categorical  = 'categorical[1..]';
+        }
+      }
+    );
     this.numberCodesListener.subscribe(
       (codes: boolean) => {
         this.numberCodes = codes;
@@ -68,9 +84,22 @@ export class QuestionnaireService {
         this.loop = data;
       }
     );
+    this.clickableImagesListener.subscribe(
+      (data: boolean) => {
+        this.clickableImages = data;
+      }
+    );
+    this.dynamicGridListener.subscribe(
+      (data: boolean) => {
+        this.dynamicGrid = data;
+      }
+    );
   }
 
   answerFormat(answers: string, properties: string) {
+    this.answers = [];
+    this.newAnswers = [];
+    this.newProperties = [];
     if (answers) {
       const formattedAnswers = [];
       this.answers = answers.split('\n');
@@ -141,27 +170,38 @@ export class QuestionnaireService {
     }
   }
 
-  onSingleQuestionAdded(qName: string, questionsData: string, ran: string) {
+  onSingle_MultiQuestionAdded(qName: string, questionsData: string, ran: string, ranProp: string) {
     let question;
-    const propRan = '';
-    if (this.loop) {
-      question =  '    \`' + this.breakline + qName + '\n\n    ' + qName + ' \"' + '\"' + '\n' + '    loop\n{\n' + this.newProperties + '\n}' + propRan + ' fields\n (\n    slice \"' + questionsData + '\n'  + '    <small><i>' + this.note + '</i></small>'  + '\"\n' + this.categoricalSingle + '\n' + '    {'  + this.newAnswers + '\n' + '    }    ' + ran + ';\n    )expand;\n';
+    // Clickable Images
+    if (this.clickableImages) {
+      question = '    \`' + this.breakline  + qName + '\n\n    ' +  qName + ' \"' + questionsData + '\n' + '    <small><i>' + this.note + '</i></small>' + '\"' + '\n' + this.clickImageText + this.categorical + '\n' + '    {'  + '  ' + this.newAnswers + '\n' + '    }' + ran + ';\n\n';
+    // Loop Question
+    } else if (this.loop) {
+      question =  '    \`' + this.breakline + qName + '\n\n    ' + qName + ' \"' + '\"' + '\n' + '    loop\n    {' + this.newProperties + '\n    }' + ranProp + ' fields\n    (\n    slice \"' + questionsData + '\n'  + '    <small><i>' + this.note + '</i></small>'  + '\"\n    ' + this.categorical + '\n' + '    {'  + this.newAnswers + '\n' + '    }' + ran + ';\n    )expand;\n';
+      // Dynamic Grid
+    } else if (this.dynamicGrid) {
+      question = '    \`' + this.breakline + qName + '\n\n    ' + qName + ' \"' + questionsData + '\n' + '    <small><i>' + this.note + '</i></small>' + '\"' + '\n' + this.dynamicGridText + 'loop\n{\n' + this.newProperties + '\n}' + ranProp + ' fields\n (\n   slice \"\"\n' + this.categorical + '\n' + '    {' + this.newAnswers + '\n' + '    }' + ran + ';\n    )expand;\n';
+      // Dynamic Grid Scala
+    } else if (this.scala) {
+      question = '    \`' + this.breakline + qName + '\n\n    ' + qName + ' \"' + questionsData + '\n' + '    <small><i>' + this.note + '</i></small>' + '\"' + '\n' + this.dynamicGridScala + 'loop\n{\n' + this.newProperties + '\n}' + ranProp + ' fields\n (\n   slice \"\"\n' + this.categorical + '\n' + '    {' + this.newAnswers + '\n' + '    }' + ran + ';\n    )expand;\n';
+      // Regular Question
     } else {
-      question = '    \`' + this.breakline + qName + '\n\n    ' + qName + ' \"' + questionsData + '\n' + '    <small><i>' + this.note + '</i></small>' + '\"\n    ' + this.categoricalSingle + '\n' + '   {\n    ' + this.newAnswers + '\n    }' + ran + ';\n\n';
+      question = '    \`' + this.breakline + qName + '\n\n    ' + qName + ' \"' + questionsData + '\n' + '    <small><i>' + this.note + '</i></small>' + '\"\n    ' + this.categorical + '\n' + '    {' + this.newAnswers + '\n    }' + ran + ';\n\n';
     }
     this.questions.push(question);
     this.questionsChanged.next(this.questions.slice());
-    this.answers = [];
-    this.newAnswers = [];
   }
 
-  onMultiQuestionAdded(qName: string, questionsData: string, ran: string) {
-    const question = '    \`' + this.breakline + qName + '\n\n    ' + qName + ' \"' + questionsData + '\n' + '    <small><i>' + this.note + '</i></small>' + '\"\n    ' + this.categoricalMulti + '\n' + '   {\n    ' + this.newAnswers + '\n    }' + ran  + ';\n\n';
-    this.questions.push(question);
-    this.questionsChanged.next(this.questions.slice());
-    this.answers = [];
-    this.newAnswers = [];
-  }
+  // onMultiQuestionAdded(qName: string, questionsData: string, ran: string, ranProp: string) {
+  //   let question;
+  //   if (this.loop) {
+  //     question =  '    \`' + this.breakline + qName + '\n\n    ' + qName + ' \"' + '\"' + '\n' + '    loop\n    {' + this.newProperties + '\n    }' + ranProp + ' fields\n    (\n    slice \"' + questionsData + '\n'  + '    <small><i>' + this.note + '</i></small>'  + '\"\n    ' + this.categoricalMulti + '\n' + '    {'  + this.newAnswers + '\n' + '    }' + ran + ';\n    )expand;\n';
+  //   } else {
+  //      question = '    \`' + this.breakline + qName + '\n\n    ' + qName + ' \"' + questionsData + '\n' + '    <small><i>' + this.note + '</i></small>' + '\"\n    ' + this.categoricalMulti + '\n' + '    {' + this.newAnswers + '\n    }' + ran  + ';\n\n';
+  //   }
+  //   this.questions.push(question);
+  //   this.questionsChanged.next(this.questions.slice());
+  // }
 
   onOpenQuestionAdded(qName: string, questionsData: string) {
     let question;
@@ -172,8 +212,6 @@ export class QuestionnaireService {
     }
     this.questions.push(question);
     this.questionsChanged.next(this.questions.slice());
-    this.answers = [];
-    this.newAnswers = [];
   }
 
   onNumbersQuestionAdded(qName: string, questionsData: string) {
@@ -185,8 +223,6 @@ export class QuestionnaireService {
     }
     this.questions.push(question);
     this.questionsChanged.next(this.questions.slice());
-    this.answers = [];
-    this.newAnswers = [];
   }
 
   onInfoQuestionAdded(qName: string, questionsData: string) {

@@ -33,6 +33,7 @@ export class DisplayComponent implements OnInit {
   questions = [];
   private subscription: Subscription;
   questionAfterJoin = '';
+  isCopied: boolean = false;
 
   constructor(private questionnaireService: QuestionnaireService) { }
 

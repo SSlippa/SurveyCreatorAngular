@@ -21,7 +21,8 @@ export class QuestinarieComponent implements OnInit {
   typeCode: number;
   answers: string;
   properties: string;
-  random: boolean = false;
+  randomAns: boolean = false;
+  randomProp: boolean = false;
   loopProperties: boolean;
 
   answerParameters: AnswerParameters[];
@@ -52,11 +53,17 @@ export class QuestinarieComponent implements OnInit {
 
 
   onSubmit(form: NgForm) {
-    let ran: string;
-    if (this.random) {
-      ran = 'ran';
+    let ranAns: string;
+    let ranProp: string;
+    if (this.randomAns) {
+      ranAns = 'ran';
     } else {
-      ran = '';
+      ranAns = '';
+    }
+    if (this.randomProp) {
+      ranProp = 'ran';
+    } else {
+      ranProp = '';
     }
     this.questionName = +form.value.questionName;
     this.questionName = this.questionName + 10 ;
@@ -65,12 +72,12 @@ export class QuestinarieComponent implements OnInit {
 
     this.questionnaireService.answerFormat(this.answers, this.properties);
 
-    if (this.typeCode === 1) {
-      this.questionnaireService.onSingleQuestionAdded(questionName, this.questionText, ran);
+    if (this.typeCode === 1 || this.typeCode === 2) {
+      this.questionnaireService.onSingle_MultiQuestionAdded(questionName, this.questionText, ranAns, ranProp);
     }
-    if (this.typeCode === 2) {
-      this.questionnaireService.onMultiQuestionAdded(questionName, this.questionText, ran);
-    }
+    // if (this.typeCode === 2) {
+    //   this.questionnaireService.onMultiQuestionAdded(questionName, this.questionText, ranAns, ranProp);
+    // }
     if (this.typeCode === 3) {
     this.questionnaireService.onOpenQuestionAdded(questionName, this.questionText);
     }

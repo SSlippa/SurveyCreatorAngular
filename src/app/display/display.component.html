@@ -1,4 +1,10 @@
 <span class="alert alert-info">Metadata</span>
+<button
+  type="button"
+  class="btn btn-primary"
+  [class.btn-success]= "isCopied"
+  ngxClipboard [cbContent]="questionAfterJoin"
+  (cbOnSuccess)="isCopied1 = true">Copy to clipboard</button>
 <!--<div class="form-group">-->
           <!--<textarea-->
             <!--id="displayText"-->
@@ -14,4 +20,5 @@
   <button style="float: right" type="button" class="btn btn-danger" (click)="onDelete(i)">X</button>
   {{question}}</pre>
 </div>
+
 

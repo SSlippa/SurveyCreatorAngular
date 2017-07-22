@@ -28,9 +28,14 @@
 
         <!--LoopProperties-->
         <div *ngIf="loopProperties" style="float:left;">
-          <h3>Loop Properties</h3>
+          <!--<h3>Loop Properties</h3>-->
           <textarea style="line-height: 2.4; " class="form-control" id="loopPropertiesArea" cols="15" rows="13" placeholder="Enter Properties here" name="answerTextArea" [(ngModel)] = "properties"></textarea>
-
+          <div >
+            <label class="btn btn-danger" style="display: flex; justify-content: center;">Rotation
+              <input type="checkbox" name="randomProp" [(ngModel)]="randomProp">
+              <span class="glyphicon glyphicon-ok"></span>
+            </label>
+          </div>
         </div>
         <!--Answers Block-->
           <div style="display: flex; min-width: 500px">
@@ -66,7 +71,7 @@
               </div>
               <div >
               <label class="btn btn-danger" style="display: flex; justify-content: center;">Rotation
-              <input type="checkbox" name="random" [(ngModel)]="random">
+              <input type="checkbox" name="randomAns" [(ngModel)]="randomAns">
               <span class="glyphicon glyphicon-ok"></span>
               </label>
               </div>

@@ -10,13 +10,16 @@ import {QuestionnaireService} from './questionnaire.service';
 import { DisplayComponent } from './display/display.component';
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 import {FroalaEditorModule, FroalaViewModule} from 'angular-froala-wysiwyg';
+import {ClipboardModule} from 'ngx-clipboard/dist';
+import { WebComponent } from './web/web.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     HeaderComponent,
     QuestinarieComponent,
-    DisplayComponent
+    DisplayComponent,
+    WebComponent
   ],
   imports: [
     BrowserModule,
@@ -25,6 +28,7 @@ import {FroalaEditorModule, FroalaViewModule} from 'angular-froala-wysiwyg';
     BrowserAnimationsModule,
     FroalaEditorModule.forRoot(),
     FroalaViewModule.forRoot(),
+    ClipboardModule
   ],
   providers: [QuestionnaireService],
   bootstrap: [AppComponent]
