@@ -29,12 +29,16 @@
         <div class="form-group" style="float:left;">
           <div class="Filter" id="filteeer">
 
-            <div class="FltrSelect" >
+            <div>
               <label for="FilterOnThisQuestion">Filter This Question</label>
-              <select class="form-control" id="FilterOnThisQuestion" name="FilterOnThisQuestion"></select>
+              <select class="form-control" id="FilterOnThisQuestion" name="FilterOnThisQuestion">
+                <option
+                  *ngFor="let qname of qNameList; let qNameIndex = index"
+                  [value]="qNameList[qNameIndex]"
+                  [selected]="qNameList[qNameIndex]">{{qname}}</option>
+              </select>
             </div>
             <hr>
-            <br>
             <div class="FltrSelect">
               <label for="FilterSelect">Filter From</label>
 

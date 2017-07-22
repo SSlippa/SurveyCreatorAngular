@@ -28,6 +28,7 @@ export class QuestionnaireService {
   webAsking = [];
   answers = [];
   properties = [];
+  qNameList = [];
   breakline = ' =============================';
 
   newAnswers = [];
@@ -197,7 +198,12 @@ export class QuestionnaireService {
     webask = '    \`' + this.breakline + qName + '\n\n    ' + qName + '.Ask() \n\n';
     this.webAsking.push(webask);
     this.webAskingChanged.next(this.webAsking.slice());
+    this.qNameList.push(qName);
   }
+
+  getQNameList() {
+    return this.qNameList;
+  };
 
   // onMultiQuestionAdded(qName: string, questionsData: string, ran: string, ranProp: string) {
   //   let question;
@@ -219,6 +225,7 @@ export class QuestionnaireService {
     }
     this.questions.push(question);
     this.questionsChanged.next(this.questions.slice());
+    this.qNameList.push(qName);
   }
 
   onNumbersQuestionAdded(qName: string, questionsData: string) {
@@ -230,12 +237,14 @@ export class QuestionnaireService {
     }
     this.questions.push(question);
     this.questionsChanged.next(this.questions.slice());
+    this.qNameList.push(qName);
   }
 
   onInfoQuestionAdded(qName: string, questionsData: string) {
     const question = '    \'' + this.breakline + qName + '\n\n    ' + qName + ' \"' + questionsData + '\"' + '\n' + '    info;\n\n';
     this.questions.push(question);
     this.questionsChanged.next(this.questions.slice());
+    this.qNameList.push(qName);
   }
 
   getAnswerParameters() {
@@ -247,5 +256,6 @@ export class QuestionnaireService {
     this.questionsChanged.next(this.questions.slice());
     this.webAsking.splice(id, 1);
     this.webAskingChanged.next(this.webAsking.slice());
+    this.qNameList.splice(id, 1);
   }
 }

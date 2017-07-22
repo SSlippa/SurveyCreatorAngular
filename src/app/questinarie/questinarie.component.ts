@@ -24,7 +24,7 @@ export class QuestinarieComponent implements OnInit {
   randomAns: boolean = false;
   randomProp: boolean = false;
   loopProperties: boolean;
-
+  qNameList;
   answerParameters: AnswerParameters[];
 
   constructor(private questionnaireService: QuestionnaireService) { }
@@ -32,6 +32,7 @@ export class QuestinarieComponent implements OnInit {
 
   ngOnInit() {
     this.answerParameters = this.questionnaireService.getAnswerParameters();
+    this.qNameList = this.questionnaireService.getQNameList();
 
     this.questionName = 10;
     this.subscription = this.questionnaireService.noteText.subscribe(
