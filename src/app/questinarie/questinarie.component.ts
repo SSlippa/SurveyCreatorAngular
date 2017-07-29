@@ -1,9 +1,8 @@
-import {Component, Input, OnInit, ViewChild} from '@angular/core';
+import {Component, OnInit, ViewChild} from '@angular/core';
 import {QuestionnaireService} from '../questionnaire.service';
 import {Subscription} from 'rxjs/Subscription';
 import {NgForm} from '@angular/forms';
 import {AnswerParameters} from './parameters.model';
-import {Subject} from 'rxjs/Subject';
 
 
 
@@ -21,15 +20,16 @@ export class QuestinarieComponent implements OnInit {
   typeCode: number;
   answers: string;
   properties: string;
-  randomAns: boolean = false;
-  randomProp: boolean = false;
+  randomAns = false;
+  randomProp = false;
   loopProperties: boolean;
   qNameList;
   answersList: Object[] = [];
   answerListAfterJoin = [];
   answerParameters: AnswerParameters[];
   QIndex;
-
+  seletedAnswers;
+  fltOptions = [];
 
   constructor(private questionnaireService: QuestionnaireService) { }
 
@@ -37,7 +37,7 @@ export class QuestinarieComponent implements OnInit {
   ngOnInit() {
     this.answerParameters = this.questionnaireService.getAnswerParameters();
     this.qNameList = this.questionnaireService.getQNameList();
-
+    console.log('selected' + this.seletedAnswers);
 
     this.questionName = 10;
     this.subscription = this.questionnaireService.noteText.subscribe(
@@ -57,13 +57,24 @@ export class QuestinarieComponent implements OnInit {
     );
   }
 
-  changeIndex(index: number) {
+  changedIndex(index: number) {
     this.QIndex = index;
-    console.log('Index' + this.QIndex);
+  }
+
+  FilterFunc() {
+    let text = '';
+    let test;
+    let test2;
+    for (let i = 0; i < this.seletedAnswers.length; i++) {
+      text = this.seletedAnswers[i];
+      this.fltOptions.push(text[0] + text[1] + text[2] + text[3]);
+    }
+    test = this.signupForm.value.filterFrom;
+    test2 = this.signupForm.value.filterThis.selectedIndex;
+    this.questionnaireService.onFilterQuestion(test, test2, this.fltOptions);
   }
 
   onSubmit(form: NgForm) {
-
     let ranAns: string;
     let ranProp: string;
     if (this.randomAns) {
@@ -83,7 +94,6 @@ export class QuestinarieComponent implements OnInit {
 
     this.questionnaireService.answerFormat(this.answers, this.properties);
     this.answersList.push(this.questionnaireService.getAnswersList());
-    console.log('AnswersList: ' + this.answersList);
 
     if (this.typeCode === 1 || this.typeCode === 2) {
       this.questionnaireService.onSingle_MultiQuestionAdded(questionName, this.questionText, ranAns, ranProp);

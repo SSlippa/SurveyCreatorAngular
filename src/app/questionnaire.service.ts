@@ -218,8 +218,6 @@ export class QuestionnaireService {
   };
 
 
-
-
   // onMultiQuestionAdded(qName: string, questionsData: string, ran: string, ranProp: string) {
   //   let question;
   //   if (this.loop) {
@@ -233,6 +231,7 @@ export class QuestionnaireService {
 
   onOpenQuestionAdded(qName: string, questionsData: string) {
     let question;
+    let webask;
     if (this.openCodes) {
       question = '    \''  + this.breakline  + qName + '\n\n    '  + qName + ' \"' + questionsData + '\n' + '    <small><i>' + this.note + '</i></small>' + '\"' + '\n' + '    text[1..500]\n    codes(\n    {' + this.newAnswers + '\n' + '    });\n\n';
     } else {
@@ -241,10 +240,16 @@ export class QuestionnaireService {
     this.questions.push(question);
     this.questionsChanged.next(this.questions.slice());
     this.qNameList.push(qName);
+    // WEB
+    webask = '    \`' + this.breakline + qName + '\n\n    ' + qName + '.Ask() \n\n';
+    this.webAsking.push(webask);
+    this.webAskingChanged.next(this.webAsking.slice());
+    this.qNameList.push(qName);
   }
 
   onNumbersQuestionAdded(qName: string, questionsData: string) {
     let question;
+    let webask;
     if (this.numberCodes) {
        question = '    \'' + this.breakline + qName + '\n\n    ' + qName + ' \"' + questionsData + '\n' + '    <small><i>' + this.note + '</i></small>' + '\"' + '\n' + '    long[1..10]\n    codes(\n    {' + this.newAnswers  + '\n' + '    });\n\n';
     } else {
@@ -253,13 +258,29 @@ export class QuestionnaireService {
     this.questions.push(question);
     this.questionsChanged.next(this.questions.slice());
     this.qNameList.push(qName);
+    // WEB
+    webask = '    \`' + this.breakline + qName + '\n\n    ' + qName + '.Ask() \n\n';
+    this.webAsking.push(webask);
+    this.webAskingChanged.next(this.webAsking.slice());
+    this.qNameList.push(qName);
   }
 
   onInfoQuestionAdded(qName: string, questionsData: string) {
+    let webask;
     const question = '    \'' + this.breakline + qName + '\n\n    ' + qName + ' \"' + questionsData + '\"' + '\n' + '    info;\n\n';
     this.questions.push(question);
     this.questionsChanged.next(this.questions.slice());
     this.qNameList.push(qName);
+    // WEB
+    webask = '    \`' + this.breakline + qName + '\n\n    ' + qName + '.Ask() \n\n';
+    this.webAsking.push(webask);
+    this.webAskingChanged.next(this.webAsking.slice());
+    this.qNameList.push(qName);
+  }
+
+  onFilterQuestion(test, test2, filter) {
+    this.webAsking.splice(test2 , 1 , this.breakline + this.qNameList[test2] + '\n\n  IF ' + test + '.Response.Value.ContainsAny({' + filter + '}) Then \n\n' + '     ' + this.qNameList[test2] + '.Ask() \n\n  End IF\n\n');
+    this.webAskingChanged.next(this.webAsking.slice());
   }
 
   getAnswerParameters() {

@@ -28,10 +28,9 @@
         <!--FILTER-->
         <div class="form-group" style="float:left;">
           <div class="Filter" id="filteeer">
-
             <div>
               <label for="FilterOnThisQuestion">Filter This Question</label>
-              <select class="form-control" id="filterOnThisQuestion" name="FilterOnThisQuestion">
+              <select class="form-control" id="filterOnThisQuestion"  name="filterThis" ngModel>
                 <option
                   *ngFor="let qname of qNameList; let qNameIndex = index"
                   [value]="qNameList[qNameIndex]"
@@ -41,23 +40,20 @@
             <hr>
             <div class="FltrSelect">
               <label for="FilterSelect">Filter From</label>
-
-              <select #filterSelect class="form-control" id="filterSelect" name="FilterSelect" (change)="changeIndex(filterSelect.selectedIndex)">
+              <select #filterSelect class="form-control" id="filterSelect"  name="filterFrom" ngModel (change)="changedIndex(filterSelect.selectedIndex)">
                 <option
                   *ngFor="let qname of qNameList"
                   [selected]="qNameList">{{qname}}</option>
               </select>
-              <select class="form-control" multiple  name="FilterSelect" style="direction: ltr" >
+              <select class="form-control" multiple name="FilterSelect" style="direction: ltr" [(ngModel)]="seletedAnswers" >
                 <option
                   *ngFor="let ans of answersList[QIndex]">
                   {{ans}}</option>
               </select>
-
             </div>
-
-
-            <button class="btn btn-info" id="FilterBtn" type="button" onclick="FilterFunc()">Filter</button>
-          </div>
+            <button class="btn btn-info" id="FilterBtn" type="button" (click)="FilterFunc()">Filter</button>
+            </div>
+            <p style="direction: ltr">{{test}}</p>
         </div>
         <!--LoopProperties-->
         <div *ngIf="loopProperties" style="float:left; margin-left: 20px">
