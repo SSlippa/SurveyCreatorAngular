@@ -25,7 +25,11 @@ export class QuestinarieComponent implements OnInit {
   randomProp: boolean = false;
   loopProperties: boolean;
   qNameList;
+  answersList: Object[] = [];
+  answerListAfterJoin = [];
   answerParameters: AnswerParameters[];
+  QIndex;
+
 
   constructor(private questionnaireService: QuestionnaireService) { }
 
@@ -33,6 +37,7 @@ export class QuestinarieComponent implements OnInit {
   ngOnInit() {
     this.answerParameters = this.questionnaireService.getAnswerParameters();
     this.qNameList = this.questionnaireService.getQNameList();
+
 
     this.questionName = 10;
     this.subscription = this.questionnaireService.noteText.subscribe(
@@ -52,8 +57,13 @@ export class QuestinarieComponent implements OnInit {
     );
   }
 
+  changeIndex(index: number) {
+    this.QIndex = index;
+    console.log('Index' + this.QIndex);
+  }
 
   onSubmit(form: NgForm) {
+
     let ranAns: string;
     let ranProp: string;
     if (this.randomAns) {
@@ -72,6 +82,8 @@ export class QuestinarieComponent implements OnInit {
 
 
     this.questionnaireService.answerFormat(this.answers, this.properties);
+    this.answersList.push(this.questionnaireService.getAnswersList());
+    console.log('AnswersList: ' + this.answersList);
 
     if (this.typeCode === 1 || this.typeCode === 2) {
       this.questionnaireService.onSingle_MultiQuestionAdded(questionName, this.questionText, ranAns, ranProp);

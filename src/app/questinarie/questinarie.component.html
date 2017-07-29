@@ -31,7 +31,7 @@
 
             <div>
               <label for="FilterOnThisQuestion">Filter This Question</label>
-              <select class="form-control" id="FilterOnThisQuestion" name="FilterOnThisQuestion">
+              <select class="form-control" id="filterOnThisQuestion" name="FilterOnThisQuestion">
                 <option
                   *ngFor="let qname of qNameList; let qNameIndex = index"
                   [value]="qNameList[qNameIndex]"
@@ -42,18 +42,25 @@
             <div class="FltrSelect">
               <label for="FilterSelect">Filter From</label>
 
-              <select class="form-control" id="FilterSelect" name="FilterSelect" ></select>
-              <select class="form-control" multiple id="FilterSelect2" name="FilterSelect" style="width: 100px" ></select>
+              <select #filterSelect class="form-control" id="filterSelect" name="FilterSelect" (change)="changeIndex(filterSelect.selectedIndex)">
+                <option
+                  *ngFor="let qname of qNameList"
+                  [selected]="qNameList">{{qname}}</option>
+              </select>
+              <select class="form-control" multiple  name="FilterSelect" style="direction: ltr" >
+                <option
+                  *ngFor="let ans of answersList[QIndex]">
+                  {{ans}}</option>
+              </select>
 
             </div>
 
 
-            <a href="#" class="btn btn-info" id="FilterBtn" type="button" onclick="FilterFunc()">Filter</a>
+            <button class="btn btn-info" id="FilterBtn" type="button" onclick="FilterFunc()">Filter</button>
           </div>
         </div>
         <!--LoopProperties-->
         <div *ngIf="loopProperties" style="float:left; margin-left: 20px">
-          <!--<h3>Loop Properties</h3>-->
           <textarea style="line-height: 2.4; " class="form-control" id="loopPropertiesArea" cols="15" rows="13" placeholder="Enter Properties here" name="answerTextArea" [(ngModel)] = "properties"></textarea>
           <div >
             <label class="btn btn-danger" style="display: flex; justify-content: center;">Rotation
@@ -72,7 +79,7 @@
                 <div  class="form-control btn-group"  >
                 <label>{{parameter.name}}</label>
                   <!--<label class="btn btn-info" >Other-->
-                    <!--<input #cb1 type="checkbox" name="other"   value="{{parameter.other}}" [(ngModel)]="parameter.other"  >-->
+                    <!--<input  type="checkbox" name="other"   value="{{parameter.other}}" [(ngModel)]="parameter.other"  >-->
                     <!--<span class="glyphicon glyphicon-ok"></span>-->
                   <!--</label>-->
                   <!--<label class="btn btn-primary ">Exclusive-->

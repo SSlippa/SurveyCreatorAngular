@@ -35,7 +35,7 @@ export class DisplayComponent implements OnInit {
   questionAfterJoin = '';
   isCopied: boolean = false;
 
-  constructor(private questionnaireService: QuestionnaireService) { }
+  constructor(private questionnaireService: QuestionnaireService) {}
 
   ngOnInit() {
     this.subscription = this.questionnaireService.questionsChanged.subscribe(

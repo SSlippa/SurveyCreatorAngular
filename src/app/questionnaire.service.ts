@@ -97,7 +97,14 @@ export class QuestionnaireService {
         this.dynamicGrid = data;
       }
     );
+    this.scalaListener.subscribe(
+      (data: boolean) => {
+        this.scala = data;
+      }
+    );
   }
+
+
 
   answerFormat(answers: string, properties: string) {
     this.answers = [];
@@ -173,6 +180,11 @@ export class QuestionnaireService {
     }
   }
 
+  getAnswersList() {
+    return this.newAnswers.slice();
+  };
+
+
   onSingle_MultiQuestionAdded(qName: string, questionsData: string, ran: string, ranProp: string) {
     let question;
     let webask;
@@ -180,14 +192,14 @@ export class QuestionnaireService {
     if (this.clickableImages) {
       question = '    \`' + this.breakline  + qName + '\n\n    ' +  qName + ' \"' + questionsData + '\n' + '    <small><i>' + this.note + '</i></small>' + '\"' + '\n' + this.clickImageText + this.categorical + '\n' + '    {'  + '  ' + this.newAnswers + '\n' + '    }' + ran + ';\n\n';
       // Dynamic Grid
-    } else if (this.dynamicGrid && this.loop) {
+    } else if (this.dynamicGrid && this.loop  && !this.scala) {
       question = '    \`' + this.breakline + qName + '\n\n    ' + qName + ' \"' + questionsData + '\n' + '    <small><i>' + this.note + '</i></small>' + '\"' + '\n' + this.dynamicGridText + '    loop\n    {' + this.newProperties + '\n    }' + ranProp + ' fields\n    (\n    slice \"\"\n    ' + this.categorical + '\n' + '    {' + this.newAnswers + '\n' + '    }' + ran + ';\n    )expand;\n';
     // Loop Question
-    } else if (this.loop) {
+    } else if (this.loop && !this.scala) {
       question =  '    \`' + this.breakline + qName + '\n\n    ' + qName + ' \"' + '\"' + '\n' + '    loop\n    {' + this.newProperties + '\n    }' + ranProp + ' fields\n    (\n    slice \"' + questionsData + '\n'  + '    <small><i>' + this.note + '</i></small>'  + '\"\n    ' + this.categorical + '\n' + '    {'  + this.newAnswers + '\n' + '    }' + ran + ';\n    )expand;\n';
       // Dynamic Grid Scala
     } else if (this.scala) {
-      question = '    \`' + this.breakline + qName + '\n\n    ' + qName + ' \"' + questionsData + '\n' + '    <small><i>' + this.note + '</i></small>' + '\"' + '\n' + this.dynamicGridScala + 'loop\n{' + this.newProperties + '\n}' + ranProp + ' fields\n (\n   slice \"\"\n' + this.categorical + '\n' + '    {' + this.newAnswers + '\n' + '    }' + ran + ';\n    )expand;\n';
+      question = '    \`' + this.breakline + qName + '\n\n    ' + qName + ' \"' + questionsData + '\n' + '    <small><i>' + this.note + '</i></small>' + '\"' + '\n' + this.dynamicGridScala + '    loop\n    {' + this.newProperties + '\n    }' + ranProp + ' fields\n (\n   slice \"\"\n' + this.categorical + '\n' + '    {' + this.newAnswers + '\n' + '    }' + ran + ';\n    )expand;\n';
       // Regular Question
     } else {
       question = '    \`' + this.breakline + qName + '\n\n    ' + qName + ' \"' + questionsData + '\n' + '    <small><i>' + this.note + '</i></small>' + '\"\n    ' + this.categorical + '\n' + '    {' + this.newAnswers + '\n    }' + ran + ';\n\n';
@@ -205,6 +217,9 @@ export class QuestionnaireService {
     return this.qNameList;
   };
 
+
+
+
   // onMultiQuestionAdded(qName: string, questionsData: string, ran: string, ranProp: string) {
   //   let question;
   //   if (this.loop) {
@@ -219,7 +234,7 @@ export class QuestionnaireService {
   onOpenQuestionAdded(qName: string, questionsData: string) {
     let question;
     if (this.openCodes) {
-      question = '    \''  + this.breakline  + qName + '\n\n    '  + qName + ' \"' + questionsData + '\n' + '    <small><i>' + this.note + '</i></small>' + '\"' + '\n' + '    text[1..500]\n    codes(\n    {' + this.newAnswers + '\n' +    '});\n\n';
+      question = '    \''  + this.breakline  + qName + '\n\n    '  + qName + ' \"' + questionsData + '\n' + '    <small><i>' + this.note + '</i></small>' + '\"' + '\n' + '    text[1..500]\n    codes(\n    {' + this.newAnswers + '\n' + '    });\n\n';
     } else {
       question = '    \''  + this.breakline  + qName + '\n\n    '  + qName + ' \"' + questionsData + '\n' + '    <small><i>' + this.note + '</i></small>' + '\"' + '\n' + '    text[1..500];\n\n';
     }
@@ -231,7 +246,7 @@ export class QuestionnaireService {
   onNumbersQuestionAdded(qName: string, questionsData: string) {
     let question;
     if (this.numberCodes) {
-       question = '    ' + this.breakline + qName + '\n\n    ' + qName + ' \"' + questionsData + '\n' + '    <small><i>' + this.note + '</i></small>' + '\"' + '\n' + '   long[1..10]\n   codes(\n   {' + this.newAnswers  + '\n' + '   });\n\n';
+       question = '    \'' + this.breakline + qName + '\n\n    ' + qName + ' \"' + questionsData + '\n' + '    <small><i>' + this.note + '</i></small>' + '\"' + '\n' + '    long[1..10]\n    codes(\n    {' + this.newAnswers  + '\n' + '    });\n\n';
     } else {
        question = '    \'' + this.breakline + qName + '\n\n    '  + qName + ' \"' + questionsData + '\n' + '    <small><i>' + this.note + '</i></small>' + '\"' + '\n' + '    long[1..10];\n\n';
     }
