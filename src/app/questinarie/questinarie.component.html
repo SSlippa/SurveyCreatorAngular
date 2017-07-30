@@ -53,13 +53,12 @@
             </div>
             <button class="btn btn-info" id="FilterBtn" type="button" (click)="FilterFunc()">Filter</button>
             </div>
-            <p style="direction: ltr">{{test}}</p>
         </div>
         <!--LoopProperties-->
         <div *ngIf="loopProperties" style="float:left; margin-left: 20px">
           <textarea style="line-height: 2.4; " class="form-control" id="loopPropertiesArea" cols="15" rows="12" placeholder="Enter Properties here" name="answerTextArea" [(ngModel)] = "properties"></textarea>
-          <div >
-            <label class="btn btn-danger" style="display: flex; justify-content: center;">Rotation
+          <div data-toggle="buttons">
+            <label class="btn btn-danger" style="display: flex; justify-content: center;" (click)="randomProp = !randomProp">Rotation
               <input type="checkbox" name="randomProp" [(ngModel)]="randomProp">
               <span class="glyphicon glyphicon-ok"></span>
             </label>
@@ -72,33 +71,33 @@
             </div>
             <div >
               <div  *ngFor="let parameter of answerParameters">
-                <div  class="form-control btn-group"  >
+                <div  class="form-control btn-group" data-toggle="buttons" >
                 <label>{{parameter.name}}</label>
-                  <!--<label class="btn btn-info" >Other-->
-                    <!--<input  type="checkbox" name="other"   value="{{parameter.other}}" [(ngModel)]="parameter.other"  >-->
-                    <!--<span class="glyphicon glyphicon-ok"></span>-->
-                  <!--</label>-->
-                  <!--<label class="btn btn-primary ">Exclusive-->
-                    <!--<input type="checkbox" name="exclusive" value="{{parameter.name}}" [(ngModel)]="parameter.exclusive"  >-->
-                    <!--<span class="glyphicon glyphicon-ok"></span>-->
-                  <!--</label>-->
-                  <!--<label class="btn btn-success ">Fix-->
-                    <!--<input type="checkbox" name="fix" value="{{parameter.name}}" [(ngModel)]="parameter.fix" >-->
-                    <!--<span class="glyphicon glyphicon-ok"></span>-->
-                  <!--</label>-->
-                  <label class="btn btn-info">Other
-                      <input id="other" name="other" type="checkbox"  value="{{parameter.name}}" [(ngModel)]="parameter.other">
+                  <label class="btn btn-info" (click)="parameter.other = !parameter.other">Other
+                    <input  type="checkbox" name="other" value="{{parameter.other}}"  >
+                    <span class="glyphicon glyphicon-ok" ></span>
                   </label>
-                  <label class="btn btn-primary">Exclusive
-                  <input id="exclusive" name="exclusive" type="checkbox" value="{{parameter.name}}" [(ngModel)]="parameter.exclusive" >
+                  <label class="btn btn-primary" (click)="parameter.exclusive = !parameter.exclusive">Exclusive
+                    <input type="checkbox" name="exclusive" value="{{parameter.name}}"  >
+                    <span class="glyphicon glyphicon-ok"></span>
                   </label>
-                  <label class="btn btn-success">Fix
-                    <input id="fix" name="fix" type="checkbox" value="{{parameter.name}}" [(ngModel)]="parameter.fix">
+                  <label class="btn btn-success" (click)="parameter.fix = !parameter.fix">Fix
+                    <input type="checkbox" name="fix" value="{{parameter.name}}" >
+                    <span class="glyphicon glyphicon-ok"></span>
                   </label>
+                  <!--<label class="btn btn-info">Other-->
+                      <!--<input id="other" name="other" type="checkbox"  value="{{parameter.name}}" [(ngModel)]="parameter.other">-->
+                  <!--</label>-->
+                  <!--<label class="btn btn-primary">Exclusive-->
+                  <!--<input id="exclusive" name="exclusive" type="checkbox" value="{{parameter.name}}" [(ngModel)]="parameter.exclusive" >-->
+                  <!--</label>-->
+                  <!--<label class="btn btn-success">Fix-->
+                    <!--<input id="fix" name="fix" type="checkbox" value="{{parameter.name}}" [(ngModel)]="parameter.fix">-->
+                  <!--</label>-->
                 </div>
               </div>
-              <div >
-              <label class="btn btn-danger" style="display: flex; justify-content: center;">Rotation
+              <div data-toggle="buttons">
+              <label class="btn btn-danger" style="display: flex; justify-content: center;" (click)="randomAns = !randomAns">Rotation
               <input type="checkbox" name="randomAns" [(ngModel)]="randomAns">
               <span class="glyphicon glyphicon-ok"></span>
               </label>
