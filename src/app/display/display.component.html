@@ -16,7 +16,7 @@
 <!--</div>-->
 
 <div *ngFor="let question of questions; let i = index" style="cursor: pointer" [@animatedInOut]>
-<pre style="direction: ltr; min-width: 400px">
+<pre style="direction: ltr; min-width: 400px; ; max-width: 520px">
   <button style="float: right" type="button" class="btn btn-danger" (click)="onDelete(i)">X</button>
   {{question}}</pre>
 </div>

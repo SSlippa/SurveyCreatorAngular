@@ -123,10 +123,11 @@ export class QuestionnaireService {
 
 
       for (let answer of formattedAnswers) {
+        const ans = answer;
         if (qindx < 10) {
-          answer = '\n        _0' + qindx + ' ' + '\"' + answer + '\"';
+          answer = '\n        _0' + qindx + ' ' + '\"' + ans + '\"';
           if (this.answerParameters[i].exclusive) {
-            answer += ' exclusive';
+            answer = '\n        _0' + qindx + '@' + ' ' + '\"' + ans + '\"' + ' exclusive';
           }
           if (this.answerParameters[i].other) {
             answer += ' other';
@@ -136,9 +137,9 @@ export class QuestionnaireService {
           }
           this.newAnswers.push(answer);
         } else if (qindx <= this.answerParameters.length) {
-          answer = '\n    _' + qindx + ' ' + '\"' + answer + '\"';
+          answer = '\n        _' + qindx + ' ' + '\"' + ans + '\"';
           if (this.answerParameters[i].exclusive) {
-            answer += ' exclusive';
+            answer = '\n        _' + qindx + '@' + ' ' + '\"' + ans + '\"' + ' exclusive';
           }
           if (this.answerParameters[i].other) {
             answer += ' other';
@@ -148,7 +149,7 @@ export class QuestionnaireService {
           }
           this.newAnswers.push(answer);
         } else {
-          answer = '\n    _' + qindx + ' ' + '\"' + answer + '\"';
+          answer = '\n        _' + qindx + ' ' + '\"' + ans + '\"';
           this.newAnswers.push(answer);
         }
         qindx++;
@@ -190,24 +191,24 @@ export class QuestionnaireService {
     let webask;
     // Clickable Images
     if (this.clickableImages) {
-      question = '    \`' + this.breakline  + qName + '\n\n    ' +  qName + ' \"' + questionsData + '\n' + '    <small><i>' + this.note + '</i></small>' + '\"' + '\n' + this.clickImageText + this.categorical + '\n' + '    {'  + '  ' + this.newAnswers + '\n' + '    }' + ran + ';\n\n';
+      question = '    \'' + this.breakline  + qName + '\n\n    ' +  qName + ' \"' + questionsData + '\n' + '    <small><i>' + this.note + '</i></small>' + '\"' + '\n' + this.clickImageText + this.categorical + '\n' + '    {'  + '  ' + this.newAnswers + '\n' + '    }' + ran + ';\n\n';
       // Dynamic Grid
     } else if (this.dynamicGrid && this.loop  && !this.scala) {
-      question = '    \`' + this.breakline + qName + '\n\n    ' + qName + ' \"' + questionsData + '\n' + '    <small><i>' + this.note + '</i></small>' + '\"' + '\n' + this.dynamicGridText + '    loop\n    {' + this.newProperties + '\n    }' + ranProp + ' fields\n    (\n    slice \"\"\n    ' + this.categorical + '\n' + '    {' + this.newAnswers + '\n' + '    }' + ran + ';\n    )expand;\n';
+      question = '    \'' + this.breakline + qName + '\n\n    ' + qName + ' \"' + questionsData + '\n' + '    <small><i>' + this.note + '</i></small>' + '\"' + '\n' + this.dynamicGridText + '    loop\n    {' + this.newProperties + '\n    }' + ranProp + ' fields\n    (\n    slice \"\"\n    ' + this.categorical + '\n' + '    {' + this.newAnswers + '\n' + '    }' + ran + ';\n    )expand;\n';
     // Loop Question
     } else if (this.loop && !this.scala) {
-      question =  '    \`' + this.breakline + qName + '\n\n    ' + qName + ' \"' + '\"' + '\n' + '    loop\n    {' + this.newProperties + '\n    }' + ranProp + ' fields\n    (\n    slice \"' + questionsData + '\n'  + '    <small><i>' + this.note + '</i></small>'  + '\"\n    ' + this.categorical + '\n' + '    {'  + this.newAnswers + '\n' + '    }' + ran + ';\n    )expand;\n';
+      question =  '    \'' + this.breakline + qName + '\n\n    ' + qName + ' \"' + '\"' + '\n' + '    loop\n    {' + this.newProperties + '\n    }' + ranProp + ' fields\n    (\n    slice \"' + questionsData + '\n'  + '    <small><i>' + this.note + '</i></small>'  + '\"\n    ' + this.categorical + '\n' + '    {'  + this.newAnswers + '\n' + '    }' + ran + ';\n    )expand;\n';
       // Dynamic Grid Scala
     } else if (this.scala) {
-      question = '    \`' + this.breakline + qName + '\n\n    ' + qName + ' \"' + questionsData + '\n' + '    <small><i>' + this.note + '</i></small>' + '\"' + '\n' + this.dynamicGridScala + '    loop\n    {' + this.newProperties + '\n    }' + ranProp + ' fields\n (\n   slice \"\"\n' + this.categorical + '\n' + '    {' + this.newAnswers + '\n' + '    }' + ran + ';\n    )expand;\n';
+      question = '    \'' + this.breakline + qName + '\n\n    ' + qName + ' \"' + questionsData + '\n' + '    <small><i>' + this.note + '</i></small>' + '\"' + '\n' + this.dynamicGridScala + '    loop\n    {' + this.newProperties + '\n    }' + ranProp + ' fields\n (\n   slice \"\"\n' + this.categorical + '\n' + '    {' + this.newAnswers + '\n' + '    }' + ran + ';\n    )expand;\n';
       // Regular Question
     } else {
-      question = '    \`' + this.breakline + qName + '\n\n    ' + qName + ' \"' + questionsData + '\n' + '    <small><i>' + this.note + '</i></small>' + '\"\n    ' + this.categorical + '\n' + '    {' + this.newAnswers + '\n    }' + ran + ';\n\n';
+      question = '    \'' + this.breakline + qName + '\n\n    ' + qName + ' \"' + questionsData + '\n' + '    <small><i>' + this.note + '</i></small>' + '\"\n    ' + this.categorical + '\n' + '    {' + this.newAnswers + '\n    }' + ran + ';\n\n';
     }
     this.questions.push(question);
     this.questionsChanged.next(this.questions.slice());
     // WEB
-    webask = '    \`' + this.breakline + qName + '\n\n    ' + qName + '.Ask() \n\n';
+    webask = '    \'' + this.breakline + qName + '\n\n    ' + qName + '.Ask() \n\n';
     this.webAsking.push(webask);
     this.webAskingChanged.next(this.webAsking.slice());
     this.qNameList.push(qName);
@@ -241,7 +242,7 @@ export class QuestionnaireService {
     this.questionsChanged.next(this.questions.slice());
     this.qNameList.push(qName);
     // WEB
-    webask = '    \`' + this.breakline + qName + '\n\n    ' + qName + '.Ask() \n\n';
+    webask = '    \'' + this.breakline + qName + '\n\n    ' + qName + '.Ask() \n\n';
     this.webAsking.push(webask);
     this.webAskingChanged.next(this.webAsking.slice());
     this.qNameList.push(qName);
@@ -259,7 +260,7 @@ export class QuestionnaireService {
     this.questionsChanged.next(this.questions.slice());
     this.qNameList.push(qName);
     // WEB
-    webask = '    \`' + this.breakline + qName + '\n\n    ' + qName + '.Ask() \n\n';
+    webask = '    \'' + this.breakline + qName + '\n\n    ' + qName + '.Ask() \n\n';
     this.webAsking.push(webask);
     this.webAskingChanged.next(this.webAsking.slice());
     this.qNameList.push(qName);
@@ -272,7 +273,7 @@ export class QuestionnaireService {
     this.questionsChanged.next(this.questions.slice());
     this.qNameList.push(qName);
     // WEB
-    webask = '    \`' + this.breakline + qName + '\n\n    ' + qName + '.Ask() \n\n';
+    webask = '    \'' + this.breakline + qName + '\n\n    ' + qName + '.Show() \n\n';
     this.webAsking.push(webask);
     this.webAskingChanged.next(this.webAsking.slice());
     this.qNameList.push(qName);
