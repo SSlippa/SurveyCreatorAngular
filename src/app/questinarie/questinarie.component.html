@@ -1,16 +1,18 @@
 <div style="margin-top: 10px">
     <form (ngSubmit)="onSubmit(f)" #f="ngForm">
-        <div class="form-group">
+        <!--Question Name + Question-->
+        <div class="form-group" >
           <label  for="questionName">Question Name</label>
           <input id="questionName" class="form-control" type="text" name="questionName"  [ngModel]="questionName" >
-            <ul class="row list-inline form-control" style="margin: 0; background-color: rgba(216, 27, 96, 0.09)">
-              <li><button  type="button" (click)="onTags('<b>', '</b>')"><b>B</b></button></li>
-              <li><button  type="button" (click)="onTags('<u>', '</u>')"><u>U</u></button></li>
-              <li><button  type="button" (click)="onTags('<h3>', '</h3>')">h3</button></li>
-              <li><button  type="button" (click)="onTags('<h4>', '</h4>')">h4</button></li>
-              <li><input id="textcolor" type="color"  name="color"></li>
-              <li><button  type="button" onclick="colors()">Color</button></li>
-            </ul>
+            <!--<ul class="row list-inline form-control" style="margin: 0; background-color: rgba(216, 27, 96, 0.09)">-->
+              <!--<li><button  type="button" (click)="onTags('<b>', '</b>')"><b>B</b></button></li>-->
+              <!--<li><button  type="button" (click)="onTags('<u>', '</u>')"><u>U</u></button></li>-->
+              <!--<li><button  type="button" (click)="onTags('<h3>', '</h3>')">h3</button></li>-->
+              <!--<li><button  type="button" (click)="onTags('<h4>', '</h4>')">h4</button></li>-->
+              <!--<li><input id="textcolor" type="color"  name="color"></li>-->
+              <!--<li><button  type="button" onclick="colors()">Color</button></li>-->
+            <!--</ul>-->
+          <!--[froalaEditor]-->
           <textarea
             style="background-color: rgba(216, 27, 96, 0.09)"
             name="questionText"
@@ -21,51 +23,90 @@
             placeholder="Enter your question here"
             [(ngModel)]="questionText"></textarea>
         </div>
+        <!--Note-->
         <span class="help-block alert alert-info" *ngIf="noteText">{{ noteText }}</span>
-
-        <div style="display: flex">
-          <div>
-          <textarea style="line-height: 2.4; " class="form-control" id="answerTextArea" cols="25" rows="13" placeholder="Enter Answers here" name="answerTextArea" [(ngModel)] = "answers"></textarea>
-          </div>
+        <!--FILTER-->
+        <div class="form-group" style="float:left;">
+          <div class="Filter" id="filteeer">
+            <div>
+              <label for="FilterOnThisQuestion">Filter This Question</label>
+              <select class="form-control" id="filterOnThisQuestion"  name="filterThis" ngModel>
+                <option
+                  *ngFor="let qname of qNameList; let qNameIndex = index"
+                  [value]="qNameList[qNameIndex]"
+                  [selected]="qNameList[qNameIndex]">{{qname}}</option>
+              </select>
+            </div>
+            <hr>
+            <div class="FltrSelect">
+              <label for="FilterSelect">Filter From</label>
+              <select #filterSelect class="form-control" id="filterSelect"  name="filterFrom" ngModel (change)="changedIndex(filterSelect.selectedIndex)">
+                <option
+                  *ngFor="let qname of qNameList"
+                  [selected]="qNameList">{{qname}}</option>
+              </select>
+              <select class="form-control" multiple name="FilterSelect" style="direction: ltr" [(ngModel)]="seletedAnswers" >
+                <option
+                  *ngFor="let ans of answersList[QIndex]">
+                  {{ans}}</option>
+              </select>
+            </div>
+            <button class="btn btn-info" id="FilterBtn" type="button" (click)="FilterFunc()">Filter</button>
+            </div>
+            <p style="direction: ltr">{{test}}</p>
+        </div>
+        <!--LoopProperties-->
+        <div *ngIf="loopProperties" style="float:left; margin-left: 20px">
+          <textarea style="line-height: 2.4; " class="form-control" id="loopPropertiesArea" cols="15" rows="13" placeholder="Enter Properties here" name="answerTextArea" [(ngModel)] = "properties"></textarea>
           <div >
-            <div  *ngFor="let parameter of answerParameters">
-              <div  class="form-control btn-group" >
-              <label>{{parameter.name}}</label>
-                <!--<label class="btn btn-info" >Other-->
-                  <!--<input #cb1 type="checkbox" name="other"   value="{{parameter.other}}" [(ngModel)]="parameter.other"  >-->
-                  <!--<span class="glyphicon glyphicon-ok"></span>-->
-                <!--</label>-->
-                <!--<label class="btn btn-primary ">Exclusive-->
-                  <!--<input type="checkbox" name="exclusive" value="{{parameter.name}}" [(ngModel)]="parameter.exclusive"  >-->
-                  <!--<span class="glyphicon glyphicon-ok"></span>-->
-                <!--</label>-->
-                <!--<label class="btn btn-success ">Fix-->
-                  <!--<input type="checkbox" name="fix" value="{{parameter.name}}" [(ngModel)]="parameter.fix" >-->
-                  <!--<span class="glyphicon glyphicon-ok"></span>-->
-                <!--</label>-->
-                <label class="btn btn-info">Other
-                    <input id="other" name="other" type="checkbox"  value="{{parameter.name}}" [(ngModel)]="parameter.other">
-                </label>
-                <label class="btn btn-primary">Exclusive
-                <input id="exclusive" name="exclusive" type="checkbox" value="{{parameter.name}}" [(ngModel)]="parameter.exclusive" >
-                </label>
-                <label class="btn btn-success">Fix
-                  <input id="fix" name="fix" type="checkbox" value="{{parameter.name}}" [(ngModel)]="parameter.fix">
-                </label>
-              </div>
+            <label class="btn btn-danger" style="display: flex; justify-content: center;">Rotation
+              <input type="checkbox" name="randomProp" [(ngModel)]="randomProp">
+              <span class="glyphicon glyphicon-ok"></span>
+            </label>
+          </div>
+        </div>
+        <!--Answers Block-->
+          <div style="display: flex; min-width: 500px">
+            <div>
+            <textarea style="line-height: 2.4; " class="form-control" id="answerTextArea" cols="25" rows="13" placeholder="Enter Answers here" name="answerTextArea" [(ngModel)] = "answers"></textarea>
             </div>
             <div >
-            <label class="btn btn-danger" style="display: flex; justify-content: center;">Rotation
-            <input type="checkbox" name="random" [(ngModel)]="random">
-            <span class="glyphicon glyphicon-ok"></span>
-            </label>
+              <div  *ngFor="let parameter of answerParameters">
+                <div  class="form-control btn-group"  >
+                <label>{{parameter.name}}</label>
+                  <!--<label class="btn btn-info" >Other-->
+                    <!--<input  type="checkbox" name="other"   value="{{parameter.other}}" [(ngModel)]="parameter.other"  >-->
+                    <!--<span class="glyphicon glyphicon-ok"></span>-->
+                  <!--</label>-->
+                  <!--<label class="btn btn-primary ">Exclusive-->
+                    <!--<input type="checkbox" name="exclusive" value="{{parameter.name}}" [(ngModel)]="parameter.exclusive"  >-->
+                    <!--<span class="glyphicon glyphicon-ok"></span>-->
+                  <!--</label>-->
+                  <!--<label class="btn btn-success ">Fix-->
+                    <!--<input type="checkbox" name="fix" value="{{parameter.name}}" [(ngModel)]="parameter.fix" >-->
+                    <!--<span class="glyphicon glyphicon-ok"></span>-->
+                  <!--</label>-->
+                  <label class="btn btn-info">Other
+                      <input id="other" name="other" type="checkbox"  value="{{parameter.name}}" [(ngModel)]="parameter.other">
+                  </label>
+                  <label class="btn btn-primary">Exclusive
+                  <input id="exclusive" name="exclusive" type="checkbox" value="{{parameter.name}}" [(ngModel)]="parameter.exclusive" >
+                  </label>
+                  <label class="btn btn-success">Fix
+                    <input id="fix" name="fix" type="checkbox" value="{{parameter.name}}" [(ngModel)]="parameter.fix">
+                  </label>
+                </div>
+              </div>
+              <div >
+              <label class="btn btn-danger" style="display: flex; justify-content: center;">Rotation
+              <input type="checkbox" name="randomAns" [(ngModel)]="randomAns">
+              <span class="glyphicon glyphicon-ok"></span>
+              </label>
+              </div>
             </div>
           </div>
 
-
-
-
-        </div>
+        <!--Submit Button-->
         <button type="submit" class="btn btn-primary btn-block" [disabled]="!f.valid">ADD</button>
     </form>
 </div>

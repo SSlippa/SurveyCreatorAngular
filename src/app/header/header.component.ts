@@ -1,6 +1,7 @@
 import {Component, EventEmitter, OnInit, Output, ViewChild} from '@angular/core';
 import {NgForm} from '@angular/forms';
 import {QuestionnaireService} from '../questionnaire.service';
+import {Subject} from 'rxjs/Subject';
 
 @Component({
   selector: 'app-header',
@@ -10,10 +11,47 @@ import {QuestionnaireService} from '../questionnaire.service';
 export class HeaderComponent implements OnInit {
   @ViewChild('f') signupForm: NgForm;
   questionType: string;
+  loop: boolean;
+  clickableImages: boolean;
+  dynamicGrid: boolean;
+  openCodes: boolean;
+  numbersCodes: boolean;
+  scala: boolean;
 
   constructor(private questionnaireService: QuestionnaireService) { }
 
   ngOnInit() {
+
+  }
+
+  LoopChange () {
+    this.loop = !this.loop;
+    this.questionnaireService.loopListener.next(this.loop);
+  }
+
+  ClickImgChange () {
+    this.clickableImages = !this.clickableImages;
+    this.questionnaireService.clickableImagesListener.next(this.clickableImages);
+  }
+
+  DynamicGrigChange () {
+    this.dynamicGrid = !this.dynamicGrid;
+    this.questionnaireService.dynamicGridListener.next(this.dynamicGrid);
+  }
+
+  ScalaChange () {
+    this.scala = !this.scala;
+    this.questionnaireService.scalaListener.next(this.scala);
+  }
+
+  OpenCodesChange () {
+    this.openCodes = !this.openCodes;
+    this.questionnaireService.openCodesListener.next(this.openCodes);
+  }
+
+  NumberCodesChange () {
+    this.numbersCodes = !this.numbersCodes;
+    this.questionnaireService.numberCodesListener.next(this.numbersCodes);
   }
 
   onType(type: string) {
@@ -31,7 +69,7 @@ export class HeaderComponent implements OnInit {
       this.questionnaireService.typeCode.next(3);
     }
     if (type === 'numbers') {
-      this.questionnaireService.noteText.next('');
+      this.questionnaireService.noteText.next('הכנס תשובה מספרית');
       this.questionnaireService.typeCode.next(4);
     }
     if (type === 'info') {

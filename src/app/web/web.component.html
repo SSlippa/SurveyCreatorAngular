@@ -1,0 +1,12 @@
+<span class="alert alert-info">Web</span>
+<button
+  type="button"
+  class="btn btn-primary"
+  [class.btn-success]= "isCopied"
+  ngxClipboard [cbContent]="webAskAfterJoin"
+  (cbOnSuccess)="isCopied1 = true">Copy to clipboard</button>
+
+<div *ngFor="let web of webAsk; let i = index" style="cursor: pointer" [@animatedInOut]>
+<pre style="direction: ltr; min-width: 400px">
+  {{web}}</pre>
+</div>

@@ -1,12 +1,12 @@
 import { Component, OnInit } from '@angular/core';
-import {Subscription} from 'rxjs/Subscription';
+import {animate, state, style, transition, trigger} from '@angular/animations';
 import {QuestionnaireService} from '../questionnaire.service';
-import {style, state, trigger, transition, animate} from '@angular/animations';
+import {Subscription} from 'rxjs/Subscription';
 
 @Component({
-  selector: 'app-display',
-  templateUrl: './display.component.html',
-  styleUrls: ['./display.component.css'],
+  selector: 'app-web',
+  templateUrl: './web.component.html',
+  styleUrls: ['./web.component.css'],
   animations: [
     trigger('animatedInOut', [
       state('in', style({
@@ -29,25 +29,20 @@ import {style, state, trigger, transition, animate} from '@angular/animations';
     ])
   ]
 })
-export class DisplayComponent implements OnInit {
-  questions = [];
+export class WebComponent implements OnInit {
+  webAsk = [];
   private subscription: Subscription;
-  questionAfterJoin = '';
+  webAskAfterJoin = '';
   isCopied: boolean = false;
 
-  constructor(private questionnaireService: QuestionnaireService) {}
+  constructor(private questionnaireService: QuestionnaireService) { }
 
   ngOnInit() {
-    this.subscription = this.questionnaireService.questionsChanged.subscribe(
+    this.subscription = this.questionnaireService.webAskingChanged.subscribe(
       (question: string[]) => {
-        this.questions = question;
-        this.questionAfterJoin = this.questions.join('');
+        this.webAsk = question;
+        this.webAskAfterJoin = this.webAsk.join('');
       }
     );
   }
-
-  onDelete(id: number) {
-    this.questionnaireService.deleteQuestion(id);
-  }
-
 }

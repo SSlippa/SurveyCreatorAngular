@@ -1,8 +1,9 @@
-import {Component, Input, OnInit, ViewChild} from '@angular/core';
+import {Component, OnInit, ViewChild} from '@angular/core';
 import {QuestionnaireService} from '../questionnaire.service';
 import {Subscription} from 'rxjs/Subscription';
 import {NgForm} from '@angular/forms';
 import {AnswerParameters} from './parameters.model';
+
 
 
 @Component({
@@ -18,16 +19,25 @@ export class QuestinarieComponent implements OnInit {
   noteText: string;
   typeCode: number;
   answers: string;
-  random: boolean = false;
-
-  test;
+  properties: string;
+  randomAns = false;
+  randomProp = false;
+  loopProperties: boolean;
+  qNameList;
+  answersList: Object[] = [];
+  answerListAfterJoin = [];
   answerParameters: AnswerParameters[];
+  QIndex;
+  seletedAnswers;
+  fltOptions = [];
 
   constructor(private questionnaireService: QuestionnaireService) { }
 
 
   ngOnInit() {
     this.answerParameters = this.questionnaireService.getAnswerParameters();
+    this.qNameList = this.questionnaireService.getQNameList();
+    console.log('selected' + this.seletedAnswers);
 
     this.questionName = 10;
     this.subscription = this.questionnaireService.noteText.subscribe(
@@ -40,25 +50,57 @@ export class QuestinarieComponent implements OnInit {
         this.typeCode = typeCode;
       }
     );
+    this.subscription = this.questionnaireService.loopListener.subscribe(
+      (data: boolean) => {
+        this.loopProperties = data;
+      }
+    );
   }
 
+  changedIndex(index: number) {
+    this.QIndex = index;
+  }
+
+  FilterFunc() {
+    let text = '';
+    let test;
+    let test2;
+    for (let i = 0; i < this.seletedAnswers.length; i++) {
+      text = this.seletedAnswers[i];
+      this.fltOptions.push(text[0] + text[1] + text[2] + text[3]);
+    }
+    test = this.signupForm.value.filterFrom;
+    test2 = this.signupForm.value.filterThis.selectedIndex;
+    this.questionnaireService.onFilterQuestion(test, test2, this.fltOptions);
+  }
 
   onSubmit(form: NgForm) {
-
-    console.log(this.random);
+    let ranAns: string;
+    let ranProp: string;
+    if (this.randomAns) {
+      ranAns = 'ran';
+    } else {
+      ranAns = '';
+    }
+    if (this.randomProp) {
+      ranProp = 'ran';
+    } else {
+      ranProp = '';
+    }
     this.questionName = +form.value.questionName;
     this.questionName = this.questionName + 10 ;
     const questionName = 'Q' + form.value.questionName;
 
-    console.log(this.answerParameters);
 
-    this.questionnaireService.answerFormat(this.answers);
-    if (this.typeCode === 1) {
-      this.questionnaireService.onSingleQuestionAdded(questionName, this.questionText);
+    this.questionnaireService.answerFormat(this.answers, this.properties);
+    this.answersList.push(this.questionnaireService.getAnswersList());
+
+    if (this.typeCode === 1 || this.typeCode === 2) {
+      this.questionnaireService.onSingle_MultiQuestionAdded(questionName, this.questionText, ranAns, ranProp);
     }
-    if (this.typeCode === 2) {
-      this.questionnaireService.onMultiQuestionAdded(questionName, this.questionText);
-    }
+    // if (this.typeCode === 2) {
+    //   this.questionnaireService.onMultiQuestionAdded(questionName, this.questionText, ranAns, ranProp);
+    // }
     if (this.typeCode === 3) {
     this.questionnaireService.onOpenQuestionAdded(questionName, this.questionText);
     }
