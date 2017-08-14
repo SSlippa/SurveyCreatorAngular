@@ -12,6 +12,7 @@ import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 import {FroalaEditorModule, FroalaViewModule} from 'angular-froala-wysiwyg';
 import {ClipboardModule} from 'ngx-clipboard/dist';
 import { WebComponent } from './web/web.component';
+import { MenuComponent } from './menu/menu.component';
 
 @NgModule({
   declarations: [
@@ -19,7 +20,8 @@ import { WebComponent } from './web/web.component';
     HeaderComponent,
     QuestinarieComponent,
     DisplayComponent,
-    WebComponent
+    WebComponent,
+    MenuComponent
   ],
   imports: [
     BrowserModule,

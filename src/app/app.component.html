@@ -1,3 +1,7 @@
+<app-menu [@slideInOut]="menuState"></app-menu>
+<button (click)="toggleMenu()" class="hamburger" style="float: left; position: fixed">
+  <span>toggle menu</span>
+</button>
 <div class="flexContainer">
     <div class="main flex-element">
       <app-header></app-header>
@@ -10,3 +14,5 @@
     <app-web></app-web>
   </div>
 </div>
+
+

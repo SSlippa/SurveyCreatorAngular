@@ -1,7 +1,8 @@
-import {Component, EventEmitter, OnInit, Output, ViewChild} from '@angular/core';
+import {Component, EventEmitter, Inject, OnInit, Output, ViewChild} from '@angular/core';
 import {NgForm} from '@angular/forms';
 import {QuestionnaireService} from '../questionnaire.service';
 import {Subject} from 'rxjs/Subject';
+
 
 @Component({
   selector: 'app-header',
@@ -15,8 +16,11 @@ export class HeaderComponent implements OnInit {
   clickableImages: boolean;
   dynamicGrid: boolean;
   openCodes: boolean;
+  openLines: boolean;
   numbersCodes: boolean;
+  numbersAutoSum: boolean;
   scala: boolean;
+  videoPath: string;
 
   constructor(private questionnaireService: QuestionnaireService) { }
 
@@ -49,9 +53,29 @@ export class HeaderComponent implements OnInit {
     this.questionnaireService.openCodesListener.next(this.openCodes);
   }
 
+  OpenLinesChange () {
+    this.openLines = !this.openLines;
+    this.questionnaireService.openLinesListener.next(this.openLines);
+  }
+
   NumberCodesChange () {
     this.numbersCodes = !this.numbersCodes;
     this.questionnaireService.numberCodesListener.next(this.numbersCodes);
+  }
+
+  NumberAutoSumChange () {
+    this.numbersAutoSum = !this.numbersAutoSum;
+    this.questionnaireService.numberAutoSumListener.next(this.numbersAutoSum);
+  }
+
+  SavePath (fileInput: any) {
+    // this.path = fileInput.target.files[0].name;
+    // console.log(this.path.attributes('name'));
+
+  }
+
+  pathChange () {
+    this.questionnaireService.videoPathChanged.next(this.videoPath);
   }
 
   onType(type: string) {
@@ -75,6 +99,10 @@ export class HeaderComponent implements OnInit {
     if (type === 'info') {
       this.questionnaireService.noteText.next('');
       this.questionnaireService.typeCode.next(5);
+    }
+    if (type === 'video') {
+      this.questionnaireService.noteText.next('');
+      this.questionnaireService.typeCode.next(6);
     }
   }
 

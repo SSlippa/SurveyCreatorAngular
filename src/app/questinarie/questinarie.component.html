@@ -1,9 +1,16 @@
 <div style="margin-top: 10px">
     <form (ngSubmit)="onSubmit(f)" #f="ngForm">
         <!--Question Name + Question-->
-        <div class="form-group" >
+        <div class="form-group"  >
           <label  for="questionName">Question Name</label>
+          <div style="display: -webkit-box">
           <input id="questionName" class="form-control" type="text" name="questionName"  [ngModel]="questionName" >
+          <button type="button"
+                  class="btn btn-primary"
+                  [class.btn-success]= "isCopied"
+                  ngxClipboard [cbContent]="pic"
+                  (cbOnSuccess)="isCopied = true">Image to Clipboard</button>
+          </div>
             <!--<ul class="row list-inline form-control" style="margin: 0; background-color: rgba(216, 27, 96, 0.09)">-->
               <!--<li><button  type="button" (click)="onTags('<b>', '</b>')"><b>B</b></button></li>-->
               <!--<li><button  type="button" (click)="onTags('<u>', '</u>')"><u>U</u></button></li>-->
@@ -25,6 +32,8 @@
         </div>
         <!--Note-->
         <span class="help-block alert alert-info" *ngIf="noteText">{{ noteText }}</span>
+
+
         <!--FILTER-->
         <div class="form-group" style="float:left;">
           <div class="Filter" id="filteeer">
@@ -110,5 +119,11 @@
     </form>
 </div>
 
+
+
+<footer style="margin-top: 50px">
+  <p>By Stas Kozlov ©</p>
+  <p>Version 2.0</p>
+</footer>
 
 

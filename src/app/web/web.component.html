@@ -7,6 +7,19 @@
   (cbOnSuccess)="isCopied = true">Copy to clipboard</button>
 
 <div *ngFor="let web of webAsk; let i = index" style="cursor: pointer" [@animatedInOut]>
-<pre style="direction: ltr; min-width: 400px">
+<pre style="direction: ltr; min-width: 400px; max-width: 400px">
   {{web}}</pre>
 </div>
+
+<!--<form (ngSubmit)="onSubmit()" #f2="ngForm">-->
+  <!--<input-->
+    <!--type="text"-->
+    <!--id="projectname2"-->
+    <!--required-->
+    <!--[(ngModel)]="projectName2"-->
+    <!--placeholder="Project Name"-->
+    <!--name="pName2">-->
+  <!--<div>-->
+    <!--<button type="submit" class="btn btn-info"  [disabled]="!f2.valid">Get Project</button>-->
+  <!--</div>-->
+<!--</form>-->

@@ -16,9 +16,23 @@
 <!--</div>-->
 
 <div *ngFor="let question of questions; let i = index" style="cursor: pointer" [@animatedInOut]>
-<pre style="direction: ltr; min-width: 400px; ; max-width: 520px">
+<pre style="direction: ltr; min-width: 400px; ; max-width: 520px; max-height: 400px">
   <button style="float: right" type="button" class="btn btn-danger" (click)="onDelete(i)">X</button>
   {{question}}</pre>
 </div>
+
+<!--<form (ngSubmit)="onSubmit()" #f="ngForm">-->
+  <!--<input-->
+    <!--type="text"-->
+    <!--id="projectname"-->
+    <!--required-->
+    <!--[(ngModel)]="projectName"-->
+    <!--placeholder="Project Name"-->
+    <!--name="pName">-->
+  <!--<div>-->
+    <!--<button type="submit" class="btn btn-success" [disabled]="!f.valid">Save Project</button>-->
+  <!--</div>-->
+<!--</form>-->
+
 
 

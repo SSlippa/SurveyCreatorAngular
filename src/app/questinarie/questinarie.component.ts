@@ -1,4 +1,4 @@
-import {Component, OnInit, ViewChild} from '@angular/core';
+import {Component, OnDestroy, OnInit, ViewChild} from '@angular/core';
 import {QuestionnaireService} from '../questionnaire.service';
 import {Subscription} from 'rxjs/Subscription';
 import {NgForm} from '@angular/forms';
@@ -11,7 +11,7 @@ import {AnswerParameters} from './parameters.model';
   templateUrl: './questinarie.component.html',
   styleUrls: ['./questinarie.component.css']
 })
-export class QuestinarieComponent implements OnInit {
+export class QuestinarieComponent implements OnInit, OnDestroy {
   @ViewChild('f') signupForm: NgForm;
   questionText: string;
   questionName: number;
@@ -31,13 +31,15 @@ export class QuestinarieComponent implements OnInit {
   seletedAnswers;
   fltOptions = [];
 
+  isCopied: boolean = false;
+  pic = '<mrRef RefType=\'img\' src=\'imgNdocs/pics/qashqaiNew.png\' border=\'0\' height=\'350\'/><hr/>';
+
   constructor(private questionnaireService: QuestionnaireService) { }
 
 
   ngOnInit() {
     this.answerParameters = this.questionnaireService.getAnswerParameters();
     this.qNameList = this.questionnaireService.getQNameList();
-    console.log('selected' + this.seletedAnswers);
 
     this.questionName = 10;
     this.subscription = this.questionnaireService.noteText.subscribe(
@@ -101,15 +103,27 @@ export class QuestinarieComponent implements OnInit {
     // if (this.typeCode === 2) {
     //   this.questionnaireService.onMultiQuestionAdded(questionName, this.questionText, ranAns, ranProp);
     // }
+    // Open
     if (this.typeCode === 3) {
     this.questionnaireService.onOpenQuestionAdded(questionName, this.questionText);
     }
+    // Numbers
     if (this.typeCode === 4) {
-      this.questionnaireService.onNumbersQuestionAdded(questionName, this.questionText);
+      this.questionnaireService.onNumbersQuestionAdded(questionName, this.questionText, ranAns);
     }
+    // Info
     if (this.typeCode === 5) {
       this.questionnaireService.onInfoQuestionAdded(questionName, this.questionText);
     }
+    // Video
+    if (this.typeCode === 6) {
+      this.questionnaireService.onVideoQuestionAdded(questionName, this.questionText);
+    }
+  }
+
+
+  ngOnDestroy () {
+    this.subscription.unsubscribe();
   }
 
 

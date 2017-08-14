@@ -7,6 +7,7 @@
         <div><input id="open" type="radio" name="title"   (click)="onType('open')"><label for="open">Open</label></div>
         <div><input id="numbers" type="radio" name="title"   (click)="onType('numbers')" ><label for="numbers">Numbers</label></div>
         <div><input id="info" type="radio" name="title" (click)="onType('info')" ><label for="info">Info</label></div>
+        <div><input id="video" type="radio" name="title" (click)="onType('video')" ><label for="video">Video</label></div>
       </div>
       <div *ngIf="questionType === 'single'" class="inline-radio" style="max-height: 72px">
         <div><input id="1" name="loop" type="checkbox" [checked]="loop" (change)="LoopChange()"><label for="1">Loop</label></div>
@@ -19,13 +20,19 @@
         <div><input id="6" name="clickableImages" type="checkbox" [checked]="clickableImages" (change)="ClickImgChange()"><label for="6">Clickable Images</label></div>
         <div><input id="7" name="dynamicGrid" type="checkbox" [checked]="dynamicGrid" (change)="DynamicGrigChange()">><label for="7">Dynamic Grid</label></div>
       </div>
-      <div *ngIf="questionType === 'open'" style="max-height: 72px">
-        <input id="openCode" type="checkbox" [checked]="open" (change)="OpenCodesChange()"><label for="openCode">Code</label>
+      <div *ngIf="questionType === 'open'" class="inline-radio" style="max-height: 72px">
+        <div><input id="openCode" type="checkbox" [checked]="openCodes" (change)="OpenCodesChange()"><label for="openCode">Code</label></div>
+        <div><input id="openLines" type="checkbox" [checked]="openLines" (change)="OpenLinesChange()"><label for="openLines">OpenLines</label></div>
       </div>
-      <div *ngIf="questionType === 'numbers'" style="max-height: 72px">
-        <input id="numbersCode" type="checkbox" [checked]="numbersCodes" (change)="NumberCodesChange()"><label for="numbersCode">Code</label>
+      <div *ngIf="questionType === 'numbers'" class="inline-radio" style="max-height: 72px">
+        <div><input id="numbersCode" type="checkbox" [checked]="numbersCodes" (change)="NumberCodesChange()"><label for="numbersCode">Code</label></div>
+        <div><input id="numbersAutoSum" type="checkbox" [checked]="numbersAutoSum" (change)="NumberAutoSumChange()"><label for="numbersAutoSum">AutoSum</label></div>
+      </div>
+      <div *ngIf="questionType === 'video'"  style="max-height: 72px">
+        <!--<input id="browse" type="file" (change)="SavePath($event)" ><label for="browse">Browse File</label>-->
+        <!--<div><input type="number" class="form-control" id="path"><label for="path">Video Path</label></div>-->
+        <input style="direction: ltr" type="text" class="form-control" placeholder="Insert link. Example: 8148sab/main" name="path" [(ngModel)]="videoPath" (change)="pathChange()">
       </div>
     </form>
   </div>
 </div>
-

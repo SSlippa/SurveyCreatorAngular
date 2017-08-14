@@ -34,6 +34,8 @@ export class DisplayComponent implements OnInit {
   private subscription: Subscription;
   questionAfterJoin = '';
   isCopied: boolean = false;
+  projectName: string;
+
 
   constructor(private questionnaireService: QuestionnaireService) {}
 
@@ -49,5 +51,28 @@ export class DisplayComponent implements OnInit {
   onDelete(id: number) {
     this.questionnaireService.deleteQuestion(id);
   }
+
+  // onSubmit() {
+  //   this.questionnaireService.storeQuestions(this.projectName).subscribe(
+  //     (response) => {
+  //       console.log(response);
+  //       // this.message = 'Save successful';
+  //     },
+  //   (error) => {
+  //     console.log(error);
+  //   }
+  //   );
+  //   this.questionnaireService.storeWeb(this.projectName).subscribe(
+  //     (response) => {
+  //       console.log(response);
+  //       // this.message = 'Save successful';
+  //     },
+  //     (error) => {
+  //       console.log(error);
+  //     }
+  //   );
+  // }
+
+
 
 }
