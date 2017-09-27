@@ -52,6 +52,10 @@ export class DisplayComponent implements OnInit {
     this.questionnaireService.deleteQuestion(id);
   }
 
+  onEdit (id: number) {
+
+  }
+
   // onSubmit() {
   //   this.questionnaireService.storeQuestions(this.projectName).subscribe(
   //     (response) => {

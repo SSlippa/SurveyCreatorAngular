@@ -30,21 +30,46 @@ export class HeaderComponent implements OnInit {
 
   LoopChange () {
     this.loop = !this.loop;
+    this.clickableImages = false;
+    this.dynamicGrid = false;
+    this.scala = false;
+    // (<HTMLInputElement> document.querySelector('#1')).checked = false;
     this.questionnaireService.loopListener.next(this.loop);
+    this.questionnaireService.clickableImagesListener.next(this.clickableImages);
+    this.questionnaireService.dynamicGridListener.next(this.dynamicGrid);
+    this.questionnaireService.scalaListener.next(this.scala);
   }
 
   ClickImgChange () {
     this.clickableImages = !this.clickableImages;
+    this.loop = false;
+    this.dynamicGrid = false;
+    this.scala = false;
+    this.questionnaireService.loopListener.next(this.loop);
     this.questionnaireService.clickableImagesListener.next(this.clickableImages);
+    this.questionnaireService.dynamicGridListener.next(this.dynamicGrid);
+    this.questionnaireService.scalaListener.next(this.scala);
   }
 
   DynamicGrigChange () {
     this.dynamicGrid = !this.dynamicGrid;
+    this.loop = false;
+    this.clickableImages = false;
+    this.scala = false;
+    this.questionnaireService.loopListener.next(this.loop);
+    this.questionnaireService.clickableImagesListener.next(this.clickableImages);
     this.questionnaireService.dynamicGridListener.next(this.dynamicGrid);
+    this.questionnaireService.scalaListener.next(this.scala);
   }
 
   ScalaChange () {
     this.scala = !this.scala;
+    this.loop = false;
+    this.clickableImages = false;
+    this.dynamicGrid = false;
+    this.questionnaireService.loopListener.next(this.loop);
+    this.questionnaireService.clickableImagesListener.next(this.clickableImages);
+    this.questionnaireService.dynamicGridListener.next(this.dynamicGrid);
     this.questionnaireService.scalaListener.next(this.scala);
   }
 

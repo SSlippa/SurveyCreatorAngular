@@ -23,13 +23,14 @@ export class QuestinarieComponent implements OnInit, OnDestroy {
   randomAns = false;
   randomProp = false;
   loopProperties: boolean;
+  DGProperties: boolean;
+  ScalaProperties: boolean;
   qNameList;
   answersList: Object[] = [];
   answerListAfterJoin = [];
   answerParameters: AnswerParameters[];
   QIndex;
   seletedAnswers;
-  fltOptions = [];
 
   isCopied: boolean = false;
   pic = '<mrRef RefType=\'img\' src=\'imgNdocs/pics/qashqaiNew.png\' border=\'0\' height=\'350\'/><hr/>';
@@ -57,23 +58,42 @@ export class QuestinarieComponent implements OnInit, OnDestroy {
         this.loopProperties = data;
       }
     );
+    this.subscription = this.questionnaireService.dynamicGridListener.subscribe(
+      (data: boolean) => {
+        this.DGProperties = data;
+      }
+    );
+    this.subscription = this.questionnaireService.scalaListener.subscribe(
+      (data: boolean) => {
+        this.ScalaProperties = data;
+      }
+    );
   }
 
   changedIndex(index: number) {
     this.QIndex = index;
   }
 
-  FilterFunc() {
+  FilterFunc(ind) {
+    const fltOptions = [];
     let text = '';
-    let test;
-    let test2;
+    let filterFrom;
+    let filterThis;
+    // let filterThisId;
     for (let i = 0; i < this.seletedAnswers.length; i++) {
       text = this.seletedAnswers[i];
-      this.fltOptions.push(text[0] + text[1] + text[2] + text[3]);
+      fltOptions.push(text[0] + text[1] + text[2] + text[3]);
     }
-    test = this.signupForm.value.filterFrom;
-    test2 = this.signupForm.value.filterThis.selectedIndex;
-    this.questionnaireService.onFilterQuestion(test, test2, this.fltOptions);
+
+    filterFrom = this.signupForm.value.filterFrom;
+    filterThis = this.signupForm.value.filterThis;
+    // filterThisId = this.signupForm.value.filterThis.selectedIndex;
+
+    // console.log('filterThis: ' + filterThis);
+    // console.log('filterFrom: ' + filterFrom);
+    // console.log('filterThisId: ' + filterThisId);
+    // console.log('ind: ' + ind);
+    this.questionnaireService.onFilterQuestion(filterFrom, filterThis, fltOptions);
   }
 
   onSubmit(form: NgForm) {

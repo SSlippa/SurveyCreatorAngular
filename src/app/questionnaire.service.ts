@@ -44,9 +44,9 @@ export class QuestionnaireService {
   newProperties = [];
   clickImageText = '    [\n    flametatype = \"clickableimages\",\n    rowContainWidth = 800,\n    rowBtnHeight = 190,\n    rowBtnWidth = 190,\n    \'rowContainHgap = 20,\n    rowBtnBorderRadius = 30,\n    rowContainOptHalign = \"right\"\n    ]\n    ';
 
-  dynamicGridText = '    [\n        flametatype = \"dynamicgrid\",\n    colBtnHeight = 190,\n    colBtnWidth = 170,\n    rowBtnWidth = 300,\n    rowContainHgap = -315,\n    colContainHoffset = 120,\n    rowContainHoffset = 40,\n    showDGprev = false,\n    colContainOptHalign = \"right\"\n    ]\n';
+  dynamicGridText = '    [\n        flametatype = \"dynamicgrid\",\n        colBtnHeight = 190,\n        colBtnWidth = 170,\n        rowBtnWidth = 300,\n        rowContainHgap = -315,\n        colContainHoffset = 120,\n        rowContainHoffset = 40,\n        showDGprev = false,\n        colContainOptHalign = \"right\"\n    ]\n';
 
-  dynamicGridScala = '    [\n        flametatype = \"dynamicgrid\",\n    colBtnWidth = 70,\n    rowBtnWidth = 150,\n    showDGprev = false\n    ]\n';
+  dynamicGridScala = '    [\n        flametatype = \"dynamicgrid\",\n        colBtnWidth = 70,\n        rowBtnWidth = 150,\n        showDGprev = false\n        \'uncomment to 1 question scala\n        \'rowContainVoffset = -100,\n        \'rowBtnShowBckgrnd = false\n    ]\n';
 
   twotab = '        ';
 
@@ -212,6 +212,8 @@ export class QuestionnaireService {
         qindx++;
         i++;
       }
+    } else {
+      this.newProperties.push('\n        _01 ""');
     }
   }
 
@@ -227,10 +229,10 @@ export class QuestionnaireService {
     if (this.clickableImages) {
       question = '    \'' + this.breakline  + qName + '\n\n    ' +  qName + ' \"' + questionsData + '\n' + '    <small><i>' + this.note + '</i></small>' + '\"' + '\n' + this.clickImageText + this.categorical + '\n' + '    {'  + '  ' + this.newAnswers + '\n' + '    }' + ran + ';\n\n';
       // Dynamic Grid
-    } else if (this.dynamicGrid && this.loop  && !this.scala) {
+    } else if (this.dynamicGrid ) {
       question = '    \'' + this.breakline + qName + '\n\n    ' + qName + ' \"' + questionsData + '\n' + '    <small><i>' + this.note + '</i></small>' + '\"' + '\n' + this.dynamicGridText + '    loop\n    {' + this.newProperties + '\n    }' + ranProp + ' fields\n    (\n    slice \"\"\n    ' + this.categorical + '\n' + '    {' + this.newAnswers + '\n' + '    }' + ran + ';\n    )expand;\n';
     // Loop Question
-    } else if (this.loop && !this.scala) {
+    } else if (this.loop ) {
       question =  '    \'' + this.breakline + qName + '\n\n    ' + qName + ' \"' + '\"' + '\n' + '    loop\n    {' + this.newProperties + '\n    }' + ranProp + ' fields\n    (\n    slice \"' + questionsData + '\n'  + '    <small><i>' + this.note + '</i></small>'  + '\"\n    ' + this.categorical + '\n' + '    {'  + this.newAnswers + '\n' + '    }' + ran + ';\n    )expand;\n';
       // Dynamic Grid Scala
     } else if (this.scala) {
@@ -354,8 +356,8 @@ export class QuestionnaireService {
     this.qNameList.push(qName);
   }
 
-  onFilterQuestion(test, test2, filter) {
-    this.webAsking.splice(test2 , 1 , this.breakline + this.qNameList[test2] + '\n\n  IF ' + test + '.Response.Value.ContainsAny({' + filter + '}) Then \n\n' + '     ' + this.qNameList[test2] + '.Ask() \n\n  End IF\n\n');
+  onFilterQuestion(filterFrom, filterThis, filter) {
+    this.webAsking.splice(filterThis , 1 , this.breakline + this.qNameList[filterThis] + '\n\n  IF ' + filterFrom + '.Response.Value.ContainsAny({' + filter + '}) Then \n\n' + '     ' + this.qNameList[filterThis] + '.Ask() \n\n  End IF\n\n');
     this.webAskingChanged.next(this.webAsking.slice());
   }
 

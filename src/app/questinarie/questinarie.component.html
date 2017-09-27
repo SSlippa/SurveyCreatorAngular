@@ -35,36 +35,36 @@
 
 
         <!--FILTER-->
-        <div class="form-group" style="float:left;">
-          <div class="Filter" id="filteeer">
-            <div>
-              <label for="FilterOnThisQuestion">Filter This Question</label>
-              <select class="form-control" id="filterOnThisQuestion"  name="filterThis" ngModel>
-                <option
-                  *ngFor="let qname of qNameList; let qNameIndex = index"
-                  [value]="qNameList[qNameIndex]"
-                  [selected]="qNameList[qNameIndex]">{{qname}}</option>
-              </select>
-            </div>
-            <hr>
-            <div class="FltrSelect">
-              <label for="FilterSelect">Filter From</label>
-              <select #filterSelect class="form-control" id="filterSelect"  name="filterFrom" ngModel (change)="changedIndex(filterSelect.selectedIndex)">
-                <option
-                  *ngFor="let qname of qNameList"
-                  [selected]="qNameList">{{qname}}</option>
-              </select>
-              <select class="form-control" multiple name="FilterSelect" style="direction: ltr" [(ngModel)]="seletedAnswers" >
-                <option
-                  *ngFor="let ans of answersList[QIndex]">
-                  {{ans}}</option>
-              </select>
-            </div>
-            <button class="btn btn-info" id="FilterBtn" type="button" (click)="FilterFunc()">Filter</button>
-            </div>
-        </div>
+        <!--<div class="form-group" style="float:left;">-->
+          <!--<div class="Filter" id="filteeer">-->
+            <!--<div>-->
+              <!--<label for="FilterOnThisQuestion">Filter This Question</label>-->
+              <!--<select class="form-control" id="filterOnThisQuestion"  name="filterThis" ngModel>-->
+                <!--<option-->
+                  <!--*ngFor="let qname of qNameList; let qNameIndex = index"-->
+                  <!--[value]="qNameIndex"-->
+                  <!--[selected]="qNameList[qNameIndex]">{{qname}}</option>-->
+              <!--</select>-->
+            <!--</div>-->
+            <!--<hr>-->
+            <!--<div class="FltrSelect">-->
+              <!--<label for="FilterSelect">Filter From</label>-->
+              <!--<select #filterSelect class="form-control" id="filterSelect"  name="filterFrom" ngModel (change)="changedIndex(filterSelect.selectedIndex)">-->
+                <!--<option-->
+                  <!--*ngFor="let qname of qNameList"-->
+                  <!--[selected]="qNameList">{{qname}}</option>-->
+              <!--</select>-->
+              <!--<select class="form-control" multiple name="FilterSelect" style="direction: ltr" [(ngModel)]="seletedAnswers" >-->
+                <!--<option-->
+                  <!--*ngFor="let ans of answersList[QIndex]">-->
+                  <!--{{ans}}</option>-->
+              <!--</select>-->
+            <!--</div>-->
+            <!--<button class="btn btn-info" id="FilterBtn" type="button" (click)="FilterFunc()">Filter</button>-->
+            <!--</div>-->
+        <!--</div>-->
         <!--LoopProperties-->
-        <div *ngIf="loopProperties" style="float:left; margin-left: 20px">
+        <div *ngIf="loopProperties || DGProperties || ScalaProperties" style="float:left; margin-left: 20px">
           <textarea style="line-height: 2.4; " class="form-control" id="loopPropertiesArea" cols="15" rows="12" placeholder="Enter Properties here" name="answerTextArea" [(ngModel)] = "properties"></textarea>
           <div data-toggle="buttons">
             <label class="btn btn-danger" style="display: flex; justify-content: center;" (click)="randomProp = !randomProp">Rotation
